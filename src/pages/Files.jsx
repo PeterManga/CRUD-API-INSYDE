@@ -3,6 +3,7 @@ import { fetchData } from '../services/apiCalls'
 // import { useParams } from 'react-router-dom'
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import './Files.css'
 
 
 const FilesPage = () => {
@@ -34,17 +35,21 @@ const FilesPage = () => {
             {files.length > 0 && (
                 <Table responsive>
                     <thead>
+                        <th>Miniatura</th>
                         <th>Nombre</th>
                         <th>Ubicacion</th>
                         <th>Duracion</th>
+                        <th>Playlists</th>
                         <th rowSpan={2}>Actions</th>
                     </thead>
                     <tbody>
                     {files.map(file => (
                             <tr key={file._id} >
+                                <td><img src={file.datos.url.replace('.mp4','.jpg')} alt="imagen" srcset="" /></td>
                                 <td>{file.nombre}</td>
                                 <td>{file.ubicacion}</td>
                                 <td>{file.datos.duracion}</td>
+                                <td>{file.playlist.length==0 ? 'ninguna': file.playlist}</td>
                                 <Button className="--bs-primary">Ver ficha</Button>
                                 <Button variant="danger">Eliminar</Button>
 

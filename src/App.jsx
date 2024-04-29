@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-     {/* <NavbarComponent></NavbarComponent>    */}
+     <NavbarComponent></NavbarComponent>   
      <Archivos></Archivos>
     </>
   )
