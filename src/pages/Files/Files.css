@@ -1,0 +1,6 @@
+img{
+    width: fit-content;
+    min-width: 50px;
+    max-width: 200px;
+    height: fit-content;
+}
