@@ -52,32 +52,36 @@ export const AddFiles = () => {
     };
 
     return (
-        <div className='border border-success'>
-            <Form className='w-75 p-3' onSubmit={handleSubmit} >
-                <legend>FORMULARIO PARA AÑADIR ARCHIVOS</legend>
-                <fieldset></fieldset>
-                <Form.Group className='mb-3' controlId='nombre'>
-                    <Form.Label>Nombre del archivo</Form.Label>
-                    <Form.Control type='text' value={formData.nombre} onChange={handleChange} name='nombre' required></Form.Control>
-                </Form.Group>
-                <Form.Group className='mb-3' controlId='descripcion'>
-                    <Form.Label>Descripcion</Form.Label>
-                    <Form.Control type='text' name='descripcion' value={formData.descripcion} onChange={handleChange} ></Form.Control>
-                </Form.Group>
-                <Form.Group className='mb-3' controlId='ubicacion'>
-                    <Form.Label>Ubicacion</Form.Label>
-                    <Form.Control type='text' name='ubicacion' value={formData.ubicacion} onChange={handleChange}></Form.Control>
-                </Form.Group>
-                <Form.Group className='mb-3' controlId='duracion'>
-                    <Form.Label>Duracion</Form.Label>
-                    <Form.Control type='number' name='duracion' value={formData.duracion} onChange={handleChange} placeholder='Indique la duración en caso de ser una imagen' required></Form.Control>
-                </Form.Group>
-                <Form.Group className='mb-3' controlId='archivo'>
-                    <Form.Label>Seleciona un archivo</Form.Label>
-                    <Form.Control type='file' name='archivo' onChange={handleFileChange}></Form.Control>
-                </Form.Group>
-                <Button type="submit">Crear archivo</Button>
-            </Form>
+        <div className='container-fluid'>
+            <div className='mt-5'>
+                <Form className='w-75 p-3 container' onSubmit={handleSubmit} >
+                    <legend className='text-center text-decoration-underline'>FORMULARIO PARA AÑADIR ARCHIVOS</legend>
+                    <fieldset></fieldset>
+                    <Form.Group className='mb-3' controlId='nombre'>
+                        <Form.Label>Nombre del archivo</Form.Label>
+                        <Form.Control type='text' value={formData.nombre} onChange={handleChange} name='nombre' required></Form.Control>
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='descripcion'>
+                        <Form.Label>Descripcion</Form.Label>
+                        <Form.Control type='text' name='descripcion' value={formData.descripcion} onChange={handleChange} ></Form.Control>
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='ubicacion'>
+                        <Form.Label>Ubicacion</Form.Label>
+                        <Form.Control type='text' name='ubicacion' value={formData.ubicacion} onChange={handleChange}></Form.Control>
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='duracion'>
+                        <Form.Label>Duracion</Form.Label>
+                        <Form.Control type='number' name='duracion' value={formData.duracion} onChange={handleChange} placeholder='Indique la duración en caso de ser una imagen' required></Form.Control>
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='archivo'>
+                        <Form.Label>Seleciona un archivo</Form.Label>
+                        <Form.Control type='file' name='archivo' onChange={handleFileChange}></Form.Control>
+                    </Form.Group>
+                    <div className='row mt-5 '>
+                        <Button type="submit" className='text-uppercase'>Crear archivo</Button>
+                    </div>
+                </Form>
+            </div>
         </div>
     )
 }

@@ -6,10 +6,10 @@ import { Body } from './pages/Body/Body';
 function App() {
   return (
     <Router>
-      <>
+      <div className='container-fluid'>
         <NavbarComponent />
         <Body />
-      </>
+      </div>
     </Router>
   );
 }

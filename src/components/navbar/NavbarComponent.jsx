@@ -7,7 +7,8 @@ function NavbarPanel() {
     const handleNavigation = UseNavigation();
 
     return (
-        <Navbar bg="dark" data-bs-theme="dark">
+        <div className='container-fluid'>
+            <Navbar bg="dark" data-bs-theme="dark" >
             <Container>
                 <Navbar.Brand onClick={() => handleNavigation('/')}>Inicio</Navbar.Brand>
                 <Nav className="me-auto">
@@ -17,6 +18,7 @@ function NavbarPanel() {
                 </Nav>
             </Container>
         </Navbar>
+        </div>
     )
 }
 

@@ -7,7 +7,7 @@ const urlBase = 'http://localhost:3000'
 export const fetchFiles = async () => {
   try {
     const response = await axios.get('http://localhost:3000/files');
-    console.log(JSON.stringify(response.data));
+    //console.log(JSON.stringify(response.data));
     return response.data; // Devuelve los datos para su uso en React
   } catch (error) {
     console.log(error);
@@ -23,7 +23,7 @@ export const fetchFiles = async () => {
 export const GetFileById = async (id) => {
   try {
     const response = await axios.get(`${urlBase}/file/${id}`)
-    console.log(JSON.stringify(response.data))
+    //console.log(JSON.stringify(response.data))
     return response.data;
   } catch (error) {
 
