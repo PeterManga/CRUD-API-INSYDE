@@ -9,15 +9,25 @@ export const FilesPage = () => {
     const [loading, setLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [deleteFile, setDeleteFile] = useState([])
-
+    const [sortByName, setSortByname] = useState(false)
     //Manejar el click en el botón crear archivo usando navidate evita que se recargue toda la aplicacion
     const handleNavigation = UseNavigation();
 
-    const handleDeleteFile = (fileID, fetchIndex) => {
-        setDeleteFile([...deleteFile, fileID])
-        console.log(fetchIndex)
-        setFiles(files.slice(0, fetchIndex))
+    const handleDeleteFile = (fileID) => {
+       const filteredFiles = files.filter((file) =>file._id != fileID)
+       setFiles (filteredFiles)
     }
+    
+    //Manejar ordenar por nombre
+    const toggleSortByName =() =>{
+        setSortByname(prevState => !prevState)
+    }
+    //Este método nos permite ordenar el array original sin alterarlo, nos devuelve otro array
+    const sortedFiles = sortByName 
+    ?files.toSorted((a,b)=>{
+        return a.nombre.localeCompare(b.nombre)
+    }) 
+    : files
 
     useEffect(() => {
         if (!loading && files.length === 0) {
@@ -31,8 +41,6 @@ export const FilesPage = () => {
                 })
                 .finally(() => setLoading(false));
         }
-
-        console.log(deleteFile)
     }, [files, loading, deleteFile]);
 
     return (
@@ -51,30 +59,31 @@ export const FilesPage = () => {
                 )}
                 {files.length > 0 && (
                     <div className="col-12 col-lg-8 offset-0 offset-lg-2">
-                        <Table className="table-bordered" responsive >
-                        <thead className="text-center">
+                        <Table className="table-bordered table-hover" responsive >
+                        <thead className="text-center border-dark ">
                             <tr>
                                 <th>#</th>
                                 <th>Miniatura</th>
-                                <th>Nombre</th>
-                                <th>Ubicacion</th>
+                                <th onClick={toggleSortByName}>{sortByName? 'Nombre ⬇':'Nombre'}</th>
+                                <th>Fecha Creacion</th>
                                 <th>Duracion</th>
                                 <th>Playlists</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {files.map((file, index) => (
+                            {sortedFiles.map((file, index) => (
                                 <tr className="align-middle" key={file._id}>
                                     <td >{index + 1}</td>
                                     <td><img src={file.datos.url.replace('.mp4', '.jpg')} alt="imagen" className="img-fluid img-thumbnail bg-dark" /></td>
+                                    <td>{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
                                     <td>{file.nombre}</td>
-                                    <td>{file.ubicacion}</td>
                                     <td>{file.datos.duracion}</td>
-                                    <td className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist}</td>
+                                    {/* Muestra todas el nombre de las playlist a las que pertenece el archivo si este campo tiene una logitud superior a 0 */}
+                                    <td className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist.map(playlist => playlist.playlistName).join(', ')}</td>
                                     <td>
                                         <Button variant="info" className="mb-2" onClick={() => handleNavigation(`/files/${file._id}`)}>Ver ficha</Button>
-                                        <Button variant="danger" onClick={() => handleDeleteFile(file._id, index)}>Eliminar</Button>
+                                        <Button variant="danger" onClick={() => handleDeleteFile(file._id)}>Eliminar</Button>
                                     </td>
                                 </tr>
                             ))}

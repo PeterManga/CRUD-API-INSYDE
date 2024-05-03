@@ -15,6 +15,15 @@ export const fetchFiles = async () => {
   }
 }
 
+export const fetchPlaylists = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/playlists');
+    return response.data; // Devuelve los datos para su uso en React
+  } catch (error) {
+    console.log(error);
+    throw error; // Maneja el error o lanza una excepción
+  }
+}
 /**
 * Realiza una solicitud para obtener los detalles de un archivo por su ID.
 * @param {string} id - ID del archivo para la cual se solicitan los detalles.
@@ -29,6 +38,13 @@ export const GetFileById = async (id) => {
 
   }
 }
+// export const BringFilesSearch = async(criteria =>{
+//   try {
+
+//   } catch (error) {
+
+//   }
+// })
 
 export const CreateFile = async (ClientformData) => {
   try {
@@ -38,7 +54,8 @@ export const CreateFile = async (ClientformData) => {
       nombre: ClientformData.nombre,
       ubicacion: ClientformData.ubicacion,
       descripcion: ClientformData.descripcion,
-      archivo: ClientformData.archivo
+      archivo: ClientformData.archivo,
+      playlists: ClientformData.playlists
     }, {
       headers: {
         'Content-Type': 'multipart/form-data' // Es importante establecer el tipo de contenido como 'multipart/form-data' para enviar archivos
