@@ -3,6 +3,7 @@ import { fetchFiles } from '../../services/apiCalls';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 //import './Files.css'
+import { ShowAlert } from "../../components/common/Alert";
 import { UseNavigation } from "../../utils/NavigationUtil";
 
 export const FilesPage = () => {
@@ -76,8 +77,8 @@ export const FilesPage = () => {
                                 <tr className="align-middle" key={file._id}>
                                     <td >{index + 1}</td>
                                     <td><img src={file.datos.url.replace('.mp4', '.jpg')} alt="imagen" className="img-fluid img-thumbnail bg-dark" /></td>
-                                    <td>{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
                                     <td>{file.nombre}</td>
+                                    <td>{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
                                     <td>{file.datos.duracion}</td>
                                     {/* Muestra todas el nombre de las playlist a las que pertenece el archivo si este campo tiene una logitud superior a 0 */}
                                     <td className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist.map(playlist => playlist.playlistName).join(', ')}</td>
@@ -92,7 +93,7 @@ export const FilesPage = () => {
                     </div>
                 )}
             </div>
-            <div className="modal fade">
+            <div className="modal fade" arial-hidden='true'>
                 <p>Hola</p>
             </div>
         </div>

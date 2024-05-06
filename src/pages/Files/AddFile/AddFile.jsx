@@ -4,6 +4,7 @@ import FormLabel from 'react-bootstrap/esm/FormLabel';
 import { CreateFile } from '../../../services/apiCalls';
 import { useEffect, useState } from 'react';
 import { fetchPlaylists } from '../../../services/apiCalls';
+import { ShowAlert } from '../../../components/common/Alert';
 
 
 export const AddFiles = () => {
@@ -52,6 +53,8 @@ export const AddFiles = () => {
         CreateFile(formData)
             .then((response) => {
                 console.log(response);
+                 ShowAlert('Archivo añadido', 'success');
+                
                 //limpia el formulario
                 setFormData({
                     nombre: '',
@@ -61,11 +64,10 @@ export const AddFiles = () => {
                     archivo: null,
                     playlist: ''
                 });
-                <div class="alert alert-success" role="alert">
-                    Archivo creado correctamente
-                </div>
+               
             })
             .catch((error) => {
+                ShowAlert('error en la solicitud', 'error')
                 console.error("Error añadir el archivo", error)
             });
     };
@@ -74,13 +76,14 @@ export const AddFiles = () => {
         fetchPlaylists()
             .then(result => {
                 setPlaylist(result);
-                console.log(result)
+                
             })
             .catch(error => {
                 console.error("Error fetching data:", error);
+                ShowAlert('error en la solicitud', 'error')
+                
             })
-        console.log(formData)
-    }, [formData])
+    }, [])
 
 
     return (
@@ -118,7 +121,7 @@ export const AddFiles = () => {
                         <Form.Control type='file' name='archivo' onChange={handleFileChange}></Form.Control>
                     </Form.Group>
                     <div className='row mt-5 '>
-                        <Button type="submit" className='text-uppercase'>Crear archivo</Button>
+                        <Button type="submit" className='text-uppercase' id='CreateFile'>Crear archivo</Button>
                     </div>
                 </Form>
             </div>

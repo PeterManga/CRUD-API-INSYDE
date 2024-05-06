@@ -48,23 +48,23 @@ export const GetFileById = async (id) => {
 
 export const CreateFile = async (ClientformData) => {
   try {
-    // Se crea un objeto FormData que enviaremos al servidor
-    console.log(ClientformData)
-    const response = await axios.postForm(`${urlBase}/file`, {
-      nombre: ClientformData.nombre,
-      ubicacion: ClientformData.ubicacion,
-      descripcion: ClientformData.descripcion,
-      archivo: ClientformData.archivo,
-      playlists: ClientformData.playlists
-    }, {
+    // Creamos un objeto FormData
+    const formData = new FormData();
+    formData.append('nombre', ClientformData.nombre);
+    formData.append('ubicacion', ClientformData.ubicacion);
+    formData.append('descripcion', ClientformData.descripcion);
+    formData.append('archivo', ClientformData.archivo);
+    formData.append('playlists', ClientformData.playlists);
+
+    // Enviamos la solicitud utilizando axios.post con el objeto FormData
+    const response = await axios.post(`${urlBase}/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Es importante establecer el tipo de contenido como 'multipart/form-data' para enviar archivos
       }
-    })
-    console.log(response)
-    return response
+    });
+    return response;
 
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
