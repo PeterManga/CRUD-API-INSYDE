@@ -38,13 +38,7 @@ export const GetFileById = async (id) => {
 
   }
 }
-// export const BringFilesSearch = async(criteria =>{
-//   try {
 
-//   } catch (error) {
-
-//   }
-// })
 
 export const CreateFile = async (ClientformData) => {
   try {
@@ -68,3 +62,12 @@ export const CreateFile = async (ClientformData) => {
     console.error(error);
   }
 };
+
+export const DeleteFileById = async (id) => {
+  try {
+    const response = await axios.delete(`${urlBase}/file/${id}`)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

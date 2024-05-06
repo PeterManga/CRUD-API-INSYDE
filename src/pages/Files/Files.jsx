@@ -2,22 +2,34 @@ import React, { useEffect, useState } from "react";
 import { fetchFiles } from '../../services/apiCalls';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import { DeleteFileById } from "../../services/apiCalls";
 //import './Files.css'
-import { ShowAlert } from "../../components/common/Alert";
+import { ShowAlert, showDeleteAlert } from "../../components/common/Alert";
 import { UseNavigation } from "../../utils/NavigationUtil";
 
 export const FilesPage = () => {
     const [loading, setLoading] = useState(false);
     const [files, setFiles] = useState([]);
-    const [deleteFile, setDeleteFile] = useState([])
+    // const [deleteFile, setDeleteFile] = useState([])
     const [sortByName, setSortByname] = useState(false)
     //Manejar el click en el botón crear archivo usando navidate evita que se recargue toda la aplicacion
     const handleNavigation = UseNavigation();
 
-    const handleDeleteFile = (fileID) => {
-       const filteredFiles = files.filter((file) =>file._id != fileID)
-       setFiles (filteredFiles)
+    //Este handle nos permite eliminar un archivo 
+    const handleDeleteFile = async (fileID) => {
+        const result = await showDeleteAlert(DeleteFileById(fileID));
+        if (result) {
+            // La eliminación fue exitosa, recargar la lista de archivos
+            setLoading(true);
+        }
     }
+    
+    // Este método nos servirá para poder borrar múltiples archivos y luego guardar los cambios
+    // const handleDeleteFilefromList = (fileID) => {
+    //     const filteredFiles = files.filter((file) =>file._id != fileID)
+    //     setFiles (filteredFiles)
+    //  }
+     
     
     //Manejar ordenar por nombre
     const toggleSortByName =() =>{
@@ -31,7 +43,7 @@ export const FilesPage = () => {
     : files
 
     useEffect(() => {
-        if (!loading && files.length === 0) {
+        if ((!loading && files.length === 0)||(loading==true)) {
             setLoading(true);
             fetchFiles()
                 .then(result => {
@@ -42,7 +54,9 @@ export const FilesPage = () => {
                 })
                 .finally(() => setLoading(false));
         }
-    }, [files, loading, deleteFile]);
+        
+        
+    }, [files, loading]);
 
     return (
         <div className="container-fluid">
@@ -75,16 +89,16 @@ export const FilesPage = () => {
                         <tbody>
                             {sortedFiles.map((file, index) => (
                                 <tr className="align-middle" key={file._id}>
-                                    <td >{index + 1}</td>
-                                    <td><img src={file.datos.url.replace('.mp4', '.jpg')} alt="imagen" className="img-fluid img-thumbnail bg-dark" /></td>
-                                    <td>{file.nombre}</td>
-                                    <td>{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
-                                    <td>{file.datos.duracion}</td>
+                                    <td name="index">{index + 1}</td>
+                                    <td name="imagen"><img src={file.datos.url.replace('.mp4', '.jpg')} alt="imagen" className="img-fluname img-thumbnail bg-dark" /></td>
+                                    <td name="nombre">{file.nombre}</td>
+                                    <td name="fecha">{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
+                                    <td name='duracion'>{file.datos.duracion}</td>
                                     {/* Muestra todas el nombre de las playlist a las que pertenece el archivo si este campo tiene una logitud superior a 0 */}
-                                    <td className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist.map(playlist => playlist.playlistName).join(', ')}</td>
+                                    <td name="playList" className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist.map(playlist => playlist.playlistName).join(', ')}</td>
                                     <td>
-                                        <Button variant="info" className="mb-2" onClick={() => handleNavigation(`/files/${file._id}`)}>Ver ficha</Button>
-                                        <Button variant="danger" onClick={() => handleDeleteFile(file._id)}>Eliminar</Button>
+                                        <Button variant="info" className="mb-2" onClick={() => handleNavigation(`/files/${file._id}`)} name="verFicha">Ver ficha</Button>
+                                        <Button variant="danger" onClick={() => handleDeleteFile(file._id)} name="delete">Eliminar</Button>
                                     </td>
                                 </tr>
                             ))}
