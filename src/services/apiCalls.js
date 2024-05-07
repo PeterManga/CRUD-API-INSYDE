@@ -71,3 +71,12 @@ export const DeleteFileById = async (id) => {
     console.error(error);
   }
 }
+
+export const DeletePlaylistById = async (id) => {
+  try {
+    const response = await axios.delete(`${urlBase}/playlist/${id}`)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

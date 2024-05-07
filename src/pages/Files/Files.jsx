@@ -17,12 +17,13 @@ export const FilesPage = () => {
 
     //Este handle nos permite eliminar un archivo 
     const handleDeleteFile = async (fileID) => {
-        const result = await showDeleteAlert(DeleteFileById(fileID));
+        const result = await showDeleteAlert(()=>DeleteFileById(fileID));
         if (result) {
             // La eliminación fue exitosa, recargar la lista de archivos
             setLoading(true);
         }
     }
+    
     
     // Este método nos servirá para poder borrar múltiples archivos y luego guardar los cambios
     // const handleDeleteFilefromList = (fileID) => {
@@ -88,12 +89,12 @@ export const FilesPage = () => {
                         </thead>
                         <tbody>
                             {sortedFiles.map((file, index) => (
-                                <tr className="align-middle" key={file._id}>
+                                <tr className="align-middle text-center" key={file._id}>
                                     <td name="index">{index + 1}</td>
                                     <td name="imagen"><img src={file.datos.url.replace('.mp4', '.jpg')} alt="imagen" className="img-fluname img-thumbnail bg-dark" /></td>
                                     <td name="nombre">{file.nombre}</td>
                                     <td name="fecha">{new Date(file.createdAt).toLocaleDateString("es-es")}</td>
-                                    <td name='duracion'>{file.datos.duracion}</td>
+                                    <td name='duracion'>{file.datos.duracion.toFixed(2)+' s'}</td>
                                     {/* Muestra todas el nombre de las playlist a las que pertenece el archivo si este campo tiene una logitud superior a 0 */}
                                     <td name="playList" className="text">{file.playlist.length === 0 ? 'ninguna' : file.playlist.map(playlist => playlist.playlistName).join(', ')}</td>
                                     <td>

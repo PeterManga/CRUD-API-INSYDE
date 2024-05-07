@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FormLabel from 'react-bootstrap/esm/FormLabel';
 import { CreateFile } from '../../../services/apiCalls';
 import { useEffect, useState } from 'react';
 import { fetchPlaylists } from '../../../services/apiCalls';
@@ -14,8 +13,8 @@ export const AddFiles = () => {
         nombre: '',
         descripcion: '',
         ubicacion: '',
-        duracion: 0,
-        archivo: undefined,
+        duracion: '',
+        archivo: '',
         playlists: []
 
     });
@@ -33,7 +32,7 @@ export const AddFiles = () => {
         }
         setFormData({
             ...formData,
-            archivo: selectedFile,
+            archivo: selectedFile||null,
         });
     };
     const handlePlaylistChange = (e) => {
@@ -62,7 +61,7 @@ export const AddFiles = () => {
                     duracion: '',
                     duracion: '',
                     archivo: null,
-                    playlist: ''
+                    playlist: []
                 });
                
             })
@@ -81,8 +80,9 @@ export const AddFiles = () => {
             .catch(error => {
                 console.error("Error fetching data:", error);
                 ShowAlert('error en la solicitud', 'error')
-                
+
             })
+            
     }, [])
 
 

@@ -11,7 +11,7 @@ export function ShowAlert(message, icon) {
 }
 
 // Esta alerta nos permite manejar la eliminacion de un archivo
-export function showDeleteAlert(funcion) {
+export async function showDeleteAlert(funcion) {
     const MySwal = withReactContent(Swal)
     return MySwal.fire({
         title: "Estás seguro?",
@@ -22,8 +22,9 @@ export function showDeleteAlert(funcion) {
         cancelButtonColor: "#d33",
         confirmButtonText: "Sí, borrar archivo !"
     }).then((result) => {
+        console.log(result)
         if (result.isConfirmed) {
-            return funcion
+             return funcion()
                 .then(() => {
                     Swal.fire({
                         title: "Eliminado!",

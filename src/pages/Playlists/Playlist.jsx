@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchPlaylists } from "../../services/apiCalls";
+import { DeletePlaylistById, fetchPlaylists } from "../../services/apiCalls";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { UseNavigation } from "../../utils/NavigationUtil";
+import { showDeleteAlert } from "../../components/common/Alert";
 
 export const PlaylistPage = () =>{
 
@@ -11,6 +12,12 @@ export const PlaylistPage = () =>{
     const [playlists, setplaylists] = useState([]);
 
     const handleNavigation = UseNavigation();
+    const handleDeleteplaylist = async (playlistId) =>{
+        const result = await showDeleteAlert(()=> DeletePlaylistById(playlistId))
+        if (result){
+            setLoading(true)
+        }
+    }
 
     //hook ussEffect
     useEffect(() => {
@@ -24,8 +31,7 @@ export const PlaylistPage = () =>{
                     console.error("Error fetching data:", error);
                 })
                 .finally(() => setLoading(false));
-        }
-        
+        }        
         
     }, [playlists, loading]);
 
@@ -36,7 +42,7 @@ export const PlaylistPage = () =>{
                 <div className="row mt-4 mb-4 sticky-top">
                     <div className=" col-md-4 offset-md-4">
                         <div className="d-grid mx-auto">
-                            <Button variant="success" onClick={() => handleNavigation('/addplaylist')}>Añadir Archvio</Button>
+                            <Button variant="success" onClick={() => handleNavigation('/addplaylist')}>Crear Playlist   </Button>
                         </div>
                     </div>
                 </div>
@@ -59,16 +65,15 @@ export const PlaylistPage = () =>{
                         </thead>
                         <tbody>
                             {playlists.map((playlist, index) => (
-                                <tr className="align-middle" key={playlist._id}>
+                                <tr className="align-middle text-center" key={playlist._id}>
                                     <td name="index">{index + 1}</td>
                                     <td name="nombre">{playlist.nombre}</td>
-                                    <td name="nombre">{playlist.duracion}</td>
+                                    <td name="duracion">{playlist.duracion.toFixed(2)+' s'}</td>
                                     <td name="fecha">{new Date(playlist.createdAt).toLocaleDateString("es-es")}</td>
-                                    {/* Muestra todas el nombre de las playlist a las que pertenece el archivo si este campo tiene una logitud superior a 0 */}
                                     <td name="archivos">{playlist.archivos.length === 0 ? ' 0' : playlist.archivos.length}</td>
-                                    <td>
-                                        <Button variant="info" className="mb-2" onClick={() => handleNavigation(`/playlists/${playlist._id}`)} name="verFicha">Ver ficha</Button>
-                                        <Button variant="danger" onClick={() => handleDeleteplaylist(playlist._id)} name="delete">Eliminar</Button>
+                                    <td className="d-grid">
+                                        <Button variant="info"  onClick={() => handleNavigation(`/playlists/${playlist._id}`)} name="verPlaylist">Ver playlist</Button>
+                                        <Button variant="danger" className="m-1" onClick={() => handleDeleteplaylist(playlist._id)} name="delete">Eliminar</Button>
                                     </td>
                                 </tr>
                             ))}

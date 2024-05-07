@@ -13,6 +13,7 @@ export const AppRoutes = () => {
       <Route path="/addFile" element={<AddFiles />} />
       <Route path='/files/:id' element={<FileDetailsPage/>}/>
       <Route path='/playlist' element={<PlaylistPage/>}/>
+      <Route path='/playlist/:id' element={<PlaylistPage/>}/>
       <Route path="*" element={<Navigate to="/" />} />
 
     </Routes>
