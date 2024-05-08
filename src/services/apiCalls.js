@@ -80,3 +80,20 @@ export const DeletePlaylistById = async (id) => {
     console.error(error);
   }
 }
+
+export const UpdatePlaylist = async (id,ClientformData) => {
+  try {
+    // Creamos un objeto FormData
+    const formData = new FormData();
+    formData.append('nombre', ClientformData.nombre);
+    formData.append('ubicacion', ClientformData.ubicacion);
+    formData.append('descripcion', ClientformData.descripcion);
+    formData.append('duracion', ClientformData.datos.duracion);
+    formData.append('playlists', ClientformData.playlists);
+    console.log(ClientformData)
+    const response = await axios.put(`${urlBase}/file/${id}`, formData)
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
