@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom'
-import { GetFileById } from '../../../services/apiCalls'
+import { DeleteFilePlaylist, GetFileById } from '../../../services/apiCalls'
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { UpdatePlaylist } from '../../../services/apiCalls';
 import { ShowAlert } from '../../../components/common/Alert';
+import { UseNavigation } from '../../../utils/NavigationUtil';
 
 
 export const FileDetailsPage = () => {
@@ -16,6 +17,10 @@ export const FileDetailsPage = () => {
     const [fileDetails, setFileDetails] = useState([]);
     const [loading, setLoading] = useState(false);
     const [durationChanges, setDurationChanges] = useState();
+    const [listPlaylist, setListPlaylist] = useState([])
+
+    //Manejar el click en el botón crear archivo usando navidate evita que se recargue toda la aplicacion
+    const handleNavigation = UseNavigation();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,12 +39,21 @@ export const FileDetailsPage = () => {
             }
         }));
     };
-    
+
+    const handleDeleteplaylist = async( id, playlistId)=>{
+        const result = await DeleteFilePlaylist(id, playlistId)
+        if (result) {
+            // La eliminación fue exitosa, recargar la lista de archivos
+            setLoading(true);
+        }
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        let changes;
-        durationChanges!=fileDetails.datos.duracion? changes=true:changes=false
-        UpdatePlaylist(id, fileDetails, durationChanges)
+        let changes = 0;
+        durationChanges < fileDetails.datos.duracion ? changes = 1 : changes = -1
+        console.log(changes)
+        UpdatePlaylist(id, fileDetails, changes)
             .then((response) => {
                 console.log(response);
                 ShowAlert('Archivo añadido', 'success')
@@ -48,7 +62,6 @@ export const FileDetailsPage = () => {
                 ShowAlert('Error en la solicitud', 'error')
                 console.error('error al actualizar el archivo', error)
             })
-
     }
 
 
@@ -58,9 +71,9 @@ export const FileDetailsPage = () => {
             setLoading(true);
             GetFileById(id)
                 .then((resullt) => {
-                    console.log(resullt);
                     setFileDetails(resullt)
                     setDurationChanges(resullt.datos.duracion)
+                    // setListPlaylist(fileDetails.playlist)
                 })
                 .catch((error) => console.error("error fetching data:", error))
                 .finally(() => setLoading(false));
@@ -90,13 +103,16 @@ export const FileDetailsPage = () => {
                             <Form.Label>Ubicacion</Form.Label>
                             <Form.Control type='text' name='ubicacion' value={fileDetails.ubicacion} onChange={handleChange}></Form.Control>
                         </Form.Group>
-                        <Form.Group className='mb-3' controlId='playlist'>
+                        <Form.Group className='mb-3 text-center' controlId='playlist'>
                             <Form.Label>Playlist</Form.Label>
-                            <Form.Control as="select" name="playlist" multiple>
+                            <div className='d-flex gap-1 justify-content-center'>
                                 {fileDetails.playlist.map((playlist) =>
-                                    <option value={playlist.playlistId} key={playlist.playlistId} name='playlists'>{playlist.playlistName}</option>
+                                    <div key={playlist.playlistId}>
+                                        <Button className='btn btn-info' onClick={()=>handleNavigation(`/playlist/${playlist.playlistId}`)}  name='playlists'>{playlist.playlistName}</Button>
+                                        <Button className='btn btn-danger' onClick={()=>handleDeleteplaylist(id,playlist.playlistId)} >x</Button>
+                                    </div>
                                 )}
-                            </Form.Control>
+                            </div>
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='duracion'>
                             <Form.Label>Duración</Form.Label>

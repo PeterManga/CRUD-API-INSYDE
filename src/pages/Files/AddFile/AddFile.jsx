@@ -32,7 +32,7 @@ export const AddFiles = () => {
         }
         setFormData({
             ...formData,
-            archivo: selectedFile||null,
+            archivo: selectedFile || null,
         });
     };
     const handlePlaylistChange = (e) => {
@@ -52,18 +52,17 @@ export const AddFiles = () => {
         CreateFile(formData)
             .then((response) => {
                 console.log(response);
-                 ShowAlert('Archivo añadido', 'success');
-                
+                ShowAlert('Archivo añadido', 'success');
+
                 //limpia el formulario
                 setFormData({
                     nombre: '',
                     descripcion: '',
                     duracion: '',
-                    duracion: '',
                     archivo: null,
                     playlist: []
                 });
-               
+
             })
             .catch((error) => {
                 ShowAlert('error en la solicitud', 'error')
@@ -75,14 +74,14 @@ export const AddFiles = () => {
         fetchPlaylists()
             .then(result => {
                 setPlaylist(result);
-                
+
             })
             .catch(error => {
                 console.error("Error fetching data:", error);
                 ShowAlert('error en la solicitud', 'error')
 
             })
-            
+
     }, [])
 
 
@@ -91,7 +90,6 @@ export const AddFiles = () => {
             <div className='mt-5'>
                 <Form className='w-75 p-3 container' onSubmit={handleSubmit} >
                     <legend className='text-center text-decoration-underline'>FORMULARIO PARA AÑADIR ARCHIVOS</legend>
-                    <fieldset></fieldset>
                     <Form.Group className='mb-3' controlId='nombre'>
                         <Form.Label>Nombre del archivo</Form.Label>
                         <Form.Control type='text' value={formData.nombre} onChange={handleChange} name='nombre' required></Form.Control>

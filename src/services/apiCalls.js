@@ -81,19 +81,47 @@ export const DeletePlaylistById = async (id) => {
   }
 }
 
-export const UpdatePlaylist = async (id,ClientformData) => {
+export const UpdatePlaylist = async (id, ClientformData, changes) => {
   try {
     // Creamos un objeto FormData
     const formData = new FormData();
     formData.append('nombre', ClientformData.nombre);
     formData.append('ubicacion', ClientformData.ubicacion);
     formData.append('descripcion', ClientformData.descripcion);
-    formData.append('duracion', ClientformData.datos.duracion);
     formData.append('playlists', ClientformData.playlists);
-    console.log(ClientformData)
+    if (changes) {
+      formData.append('duracion', ClientformData.datos.duracion);
+      formData.append('operacion', changes)
+    }
+
+    console.log(changes)
     const response = await axios.put(`${urlBase}/file/${id}`, formData)
     return response;
   } catch (error) {
     console.error(error);
   }
+}
+
+export const DeleteFilePlaylist = async (id, playlistId) => {
+  try {
+    const formData = new FormData();
+    formData.append('playlist', playlistId);
+    const response = await axios.put(`${urlBase}/filedetaills/${id}`, formData)
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
+} 
+export const CreatePlaylist = async (ClientformData) => {
+  try {
+    const formData = new FormData();
+    formData.append('nombre', ClientformData.nombre);
+    formData.append('descripcion', ClientformData.descripcion);
+    const response = await axios.post(`${urlBase}/playlist/`, formData)
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
 }

@@ -72,7 +72,7 @@ export const PlaylistPage = () =>{
                                     <td name="fecha">{new Date(playlist.createdAt).toLocaleDateString("es-es")}</td>
                                     <td name="archivos">{playlist.archivos.length === 0 ? ' 0' : playlist.archivos.length}</td>
                                     <td className="d-grid">
-                                        <Button variant="info"  onClick={() => handleNavigation(`/playlists/${playlist._id}`)} name="verPlaylist">Ver playlist</Button>
+                                        <Button variant="info"  onClick={() => handleNavigation(`/playlist/${playlist._id}`)} name="verPlaylist">Administrar playlist</Button>
                                         <Button variant="danger" className="m-1" onClick={() => handleDeleteplaylist(playlist._id)} name="delete">Eliminar</Button>
                                     </td>
                                 </tr>
