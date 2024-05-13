@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Swal from 'sweetalert2';
+
 /**
  * Obtiene la URL de la imagen del ingrediente proporcionado.
  * @returns {Promise} Promise que se resuelve con la URL de la imagen.
@@ -42,6 +44,13 @@ export const GetFileById = async (id) => {
 
 export const CreateFile = async (ClientformData) => {
   try {
+    // Mostrar la notificación de carga
+  const loadingToast = Swal.fire({
+    icon: 'info',
+    title: 'Subiendo archivo...',
+    showConfirmButton: false,
+    allowOutsideClick: false // Evitar que el usuario pueda cerrar la notificación haciendo clic fuera de ella
+  });
     // Creamos un objeto FormData
     const formData = new FormData();
     formData.append('nombre', ClientformData.nombre);
@@ -55,6 +64,16 @@ export const CreateFile = async (ClientformData) => {
       headers: {
         'Content-Type': 'multipart/form-data' // Es importante establecer el tipo de contenido como 'multipart/form-data' para enviar archivos
       }
+    });
+    // Ocultar la notificación de carga
+    loadingToast.close();
+
+    // Mostrar una notificación de éxito
+    Swal.fire({
+      icon: 'success',
+      title: 'El archivo se ha subido correctamente',
+      showConfirmButton: false,
+      timer: 3000 // Opcional: para que la notificación desaparezca después de 3 segundos
     });
     return response;
 
@@ -124,4 +143,19 @@ export const CreatePlaylist = async (ClientformData) => {
     console.error(error);
   }
 
+}
+
+/**
+* Realiza una solicitud para obtener los detalles de un archivo por su ID.
+* @param {string} id - ID del archivo para la cual se solicitan los detalles.
+* @returns {Promise} Promise que se resuelve con los datos de la respuesta.
+*/
+export const GetPlaylistByID = async (id) => {
+  try {
+    const response = await axios.get(`${urlBase}/playlist/${id}`)
+    console.log(JSON.stringify(response.data))
+    return response.data;
+  } catch (error) {
+
+  }
 }

@@ -36,9 +36,9 @@ export const AddPlaylist = () => {
             });
     };
     return (
-        <div className="container-fluid">
+        <div className="container-fluid ">
             <div className="mt-5">
-                <Form className="w-75 p-3 container"  onSubmit={handleSubmit}>
+                <Form className="w-75 p-3 container shadow-lg p-3 mb-5 bg-white rounded"  onSubmit={handleSubmit}>
                     <legend className="text-center pb-5 text-decoration-underline text-uppercase">formulario para la creacion de playlist</legend>
                     <fieldset className="border border-success border-5 p-5 ">
                     <Form.Group className='mb-3' controlId='nombre'>

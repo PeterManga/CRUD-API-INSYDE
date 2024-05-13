@@ -51,7 +51,7 @@ export const PlaylistPage = () =>{
                     <div>No se encontraron resultados de la búsqueda.</div>
                 )}
                 {playlists.length > 0 && (
-                    <div className="col-12 col-lg-8 offset-0 offset-lg-2">
+                    <div className="col-12 col-lg-8 offset-0 offset-lg-2 shadow-lg p-3 mb-5 bg-white rounded">
                         <Table className="table-bordered table-hover" responsive >
                         <thead className="text-center border-dark ">
                             <tr>
@@ -65,7 +65,7 @@ export const PlaylistPage = () =>{
                         </thead>
                         <tbody>
                             {playlists.map((playlist, index) => (
-                                <tr className="align-middle text-center" key={playlist._id}>
+                                <tr className="align-middle text-center " key={playlist._id}>
                                     <td name="index">{index + 1}</td>
                                     <td name="nombre">{playlist.nombre}</td>
                                     <td name="duracion">{playlist.duracion.toFixed(2)+' s'}</td>

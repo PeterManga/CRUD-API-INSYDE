@@ -88,8 +88,8 @@ export const FileDetailsPage = () => {
             )}
             {fileDetails._id && (
                 <div>
-                    <Form className='w-75 p-3 container' onSubmit={handleSubmit}>
-                        <legend className='text-center text-decoration-underline'>FORMULARIO PARA EDITAR ARCHIVOS</legend>
+                    <Form className='w-75 p-3 container shadow-lg p-3 mb-5 bg-white rounded' onSubmit={handleSubmit}>
+                        <legend className='text-center text-bg-info'>EDITAR ARCHIVO</legend>
                         <fieldset></fieldset>
                         <Form.Group className='mb-3' controlId='nombre'>
                             <Form.Label>Nombre</Form.Label>

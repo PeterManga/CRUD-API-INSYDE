@@ -6,6 +6,7 @@ import { fetchPlaylists } from '../../../services/apiCalls';
 import { ShowAlert } from '../../../components/common/Alert';
 
 
+
 export const AddFiles = () => {
     const [playlist, setPlaylist] = useState([])
     const [isImage, setIsImage] = useState(false)
@@ -86,10 +87,10 @@ export const AddFiles = () => {
 
 
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid '>
             <div className='mt-5'>
-                <Form className='w-75 p-3 container' onSubmit={handleSubmit} >
-                    <legend className='text-center text-decoration-underline'>FORMULARIO PARA AÑADIR ARCHIVOS</legend>
+                <Form className='w-75 p-5 container shadow-lg p-3 mb-5 bg-white rounded' onSubmit={handleSubmit} >
+                    <legend className='text-center text-bg-info'>AÑADIR ARCHIVOS</legend>
                     <Form.Group className='mb-3' controlId='nombre'>
                         <Form.Label>Nombre del archivo</Form.Label>
                         <Form.Control type='text' value={formData.nombre} onChange={handleChange} name='nombre' required></Form.Control>
@@ -102,14 +103,14 @@ export const AddFiles = () => {
                         <Form.Label>Ubicacion</Form.Label>
                         <Form.Control type='text' name='ubicacion' value={formData.ubicacion} onChange={handleChange}></Form.Control>
                     </Form.Group>
-                    <Form.Group className='mb-3' controlId='playlist'>
+                    {/* <Form.Group className='mb-3' controlId='playlist'>
                         <Form.Label>Playlist</Form.Label>
                         <Form.Control as="select" name="playlist" multiple onChange={handlePlaylistChange}>
                             {playlist.map((playlist) =>
                                 <option value={playlist._id} key={playlist._id} name='playlists'>{playlist.nombre}</option>
                             )}
                         </Form.Control>
-                    </Form.Group>
+                    </Form.Group> */}
                     {isImage ? <Form.Group className='mb-3' controlId='duracion'>
                         <Form.Label>Duracion</Form.Label>
                         <Form.Control type='number' name='duracion' value={formData.duracion} onChange={handleChange} placeholder='Indique la duración en caso de ser una imagen' required min={1}></Form.Control>

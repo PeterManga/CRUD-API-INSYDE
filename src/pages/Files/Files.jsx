@@ -60,7 +60,7 @@ export const FilesPage = () => {
     }, [files, loading]);
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid ">
             <div>
                 <div className="row mt-4 mb-4 sticky-top">
                     <div className=" col-md-4 offset-md-4">
@@ -74,7 +74,7 @@ export const FilesPage = () => {
                     <div>No se encontraron resultados de la búsqueda.</div>
                 )}
                 {files.length > 0 && (
-                    <div className="col-12 col-lg-8 offset-0 offset-lg-2">
+                    <div className="col-12 col-lg-8 offset-0 offset-lg-2 shadow-lg p-3 mb-5 bg-white rounded">
                         <Table className="table-bordered table-hover" responsive >
                         <thead className="text-center border-dark ">
                             <tr>
