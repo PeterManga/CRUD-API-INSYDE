@@ -1,8 +1,6 @@
 import axios from 'axios'
-import Swal from 'sweetalert2';
-
 /**
- * Obtiene la URL de la imagen del ingrediente proporcionado.
+ * Obtiene todos los archivos de la base de datos
  * @returns {Promise} Promise que se resuelve con la URL de la imagen.
  */
 const urlBase = 'http://localhost:3000'
@@ -17,6 +15,7 @@ export const fetchFiles = async () => {
   }
 }
 
+// Muestra todas las playlist disponibles
 export const fetchPlaylists = async () => {
   try {
     const response = await axios.get('http://localhost:3000/playlists');
@@ -41,16 +40,9 @@ export const GetFileById = async (id) => {
   }
 }
 
-
+// Esta función nos permite crear un nuevo archivo y sumbir su contenido multimedia a la nube
 export const CreateFile = async (ClientformData) => {
   try {
-    // Mostrar la notificación de carga
-  const loadingToast = Swal.fire({
-    icon: 'info',
-    title: 'Subiendo archivo...',
-    showConfirmButton: false,
-    allowOutsideClick: false // Evitar que el usuario pueda cerrar la notificación haciendo clic fuera de ella
-  });
     // Creamos un objeto FormData
     const formData = new FormData();
     formData.append('nombre', ClientformData.nombre);
@@ -65,16 +57,6 @@ export const CreateFile = async (ClientformData) => {
         'Content-Type': 'multipart/form-data' // Es importante establecer el tipo de contenido como 'multipart/form-data' para enviar archivos
       }
     });
-    // Ocultar la notificación de carga
-    loadingToast.close();
-
-    // Mostrar una notificación de éxito
-    Swal.fire({
-      icon: 'success',
-      title: 'El archivo se ha subido correctamente',
-      showConfirmButton: false,
-      timer: 3000 // Opcional: para que la notificación desaparezca después de 3 segundos
-    });
     return response;
 
   } catch (error) {
@@ -82,6 +64,7 @@ export const CreateFile = async (ClientformData) => {
   }
 };
 
+// Esta función nos permite borrar un archivo mediante su identificador
 export const DeleteFileById = async (id) => {
   try {
     const response = await axios.delete(`${urlBase}/file/${id}`)
@@ -91,6 +74,7 @@ export const DeleteFileById = async (id) => {
   }
 }
 
+// Esta función nos permite borrar una playlist mediante su identificador
 export const DeletePlaylistById = async (id) => {
   try {
     const response = await axios.delete(`${urlBase}/playlist/${id}`)
@@ -100,6 +84,7 @@ export const DeletePlaylistById = async (id) => {
   }
 }
 
+// Esta funcion nos permite modificar los datos de un archivo desde el f
 export const UpdatePlaylist = async (id, ClientformData, changes) => {
   try {
     // Creamos un objeto FormData
@@ -120,7 +105,7 @@ export const UpdatePlaylist = async (id, ClientformData, changes) => {
     console.error(error);
   }
 }
-
+//Esta es la funcion nos permite borrar una playlist del array playlist del archivo
 export const DeleteFilePlaylist = async (id, playlistId) => {
   try {
     const formData = new FormData();
@@ -132,6 +117,27 @@ export const DeleteFilePlaylist = async (id, playlistId) => {
   }
 
 } 
+
+//Esta es la funcion nos permite AÑADIR una playlist del array playlist del archivo
+export const AddPlaylistFiles = async (id, fileId, fileName, duracion, playlistName) => {
+  try {
+    const formData = new FormData();
+    formData.append('fileID', fileId);
+    formData.append('filename', fileName);
+    formData.append('duracion', duracion);
+    formData.append('playlistname', playlistName)
+    console.log(formData)
+    const response = await axios.put(`${urlBase}/playlistdetaiils/${id}`, formData)
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
+}  
+
+
+
+// Esta función nos permite crear una nueva playlist
 export const CreatePlaylist = async (ClientformData) => {
   try {
     const formData = new FormData();

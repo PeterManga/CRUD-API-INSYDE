@@ -4,6 +4,9 @@ import { CreateFile } from '../../../services/apiCalls';
 import { useEffect, useState } from 'react';
 import { fetchPlaylists } from '../../../services/apiCalls';
 import { ShowAlert } from '../../../components/common/Alert';
+import { useSelector } from 'react-redux';
+import { changeUploading } from "../../../redux/notificacionSlice";
+import { loginUser } from '../../../redux/userSlice';
 
 
 
@@ -16,9 +19,9 @@ export const AddFiles = () => {
         ubicacion: '',
         duracion: '',
         archivo: '',
-        playlists: []
-
     });
+    const notificaction = useSelector((state) => state.user.name)
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value })
@@ -59,9 +62,9 @@ export const AddFiles = () => {
                 setFormData({
                     nombre: '',
                     descripcion: '',
+                    ubicacion: '',
                     duracion: '',
-                    archivo: null,
-                    playlist: []
+                    archivo: ''
                 });
 
             })
@@ -70,6 +73,10 @@ export const AddFiles = () => {
                 console.error("Error añadir el archivo", error)
             });
     };
+
+    const handleUpdateFile = (e)=>{
+        dispatch(loginUser(e.target.value))
+    }
 
     useEffect(() => {
         fetchPlaylists()
@@ -82,8 +89,9 @@ export const AddFiles = () => {
                 ShowAlert('error en la solicitud', 'error')
 
             })
+            console.log(notificaction)
 
-    }, [])
+    }, [notificaction])
 
 
     return (
@@ -119,6 +127,10 @@ export const AddFiles = () => {
                         <Form.Label>Seleciona un archivo</Form.Label>
                         <Form.Control type='file' name='archivo' onChange={handleFileChange}></Form.Control>
                     </Form.Group>
+                    {/* <Form.Group className='mb-3' controlId='nombrePedro'>
+                        <Form.Label>Nombre del reducer</Form.Label>
+                        <Form.Control type='text'  onChange={handleUpdateFile} name='nombre' required></Form.Control>
+                    </Form.Group> */}
                     <div className='row mt-5 '>
                         <Button type="submit" className='text-uppercase' id='CreateFile'>Crear archivo</Button>
                     </div>
