@@ -11,7 +11,6 @@ import { loginUser } from '../../../redux/userSlice';
 
 
 export const AddFiles = () => {
-    const [playlist, setPlaylist] = useState([])
     const [isImage, setIsImage] = useState(false)
     const [formData, setFormData] = useState({
         nombre: '',
@@ -19,6 +18,7 @@ export const AddFiles = () => {
         ubicacion: '',
         duracion: '',
         archivo: '',
+
     });
     const notificaction = useSelector((state) => state.user.name)
     
@@ -62,9 +62,8 @@ export const AddFiles = () => {
                 setFormData({
                     nombre: '',
                     descripcion: '',
-                    ubicacion: '',
                     duracion: '',
-                    archivo: ''
+                    archivo: [],
                 });
 
             })
@@ -79,18 +78,7 @@ export const AddFiles = () => {
     }
 
     useEffect(() => {
-        fetchPlaylists()
-            .then(result => {
-                setPlaylist(result);
-
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                ShowAlert('error en la solicitud', 'error')
-
-            })
-            console.log(notificaction)
-
+        
     }, [notificaction])
 
 

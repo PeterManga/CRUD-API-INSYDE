@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AddPlaylistFiles, GetPlaylistByID } from "../../../services/apiCalls";
+import { AddPlaylistFiles, DeleteFilePlaylist, GetPlaylistByID } from "../../../services/apiCalls";
 import { fetchFiles } from "../../../services/apiCalls";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -16,30 +16,80 @@ export const PlaylistDetaillsPage = () => {
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState([]);
 
-  const handleAddPlaylist = async (id, fileId, fileName, duracion, playlistName)=>{
-    const result = await AddPlaylistFiles(id, fileId, fileName, duracion, playlistName)
-    if (result) {
-        // La eliminación fue exitosa, recargar la lista de archivos
-        //setLoading(true);
-    }
-}
+
   useEffect(() => {
-    if (loading && playlistDetaill.length == 0) {
+    if ((loading && playlistDetaill.length == 0) || (loading)) {
       setLoading(false)
       GetPlaylistByID(id)
         .then((result) => {
           setPlayListDetaill(result);
+          console.log(playlistDetaill)
         })
         .catch((error) => console.log("error fetching data:", error)),
         fetchFiles()
           .then(result => {
             setFiles(result);
-            console.log(files)
+            // console.log(files)
           })
     }
+
   }, [playlistDetaill, loading])
 
 
+  const handleAddPlaylist = async (id, fileId, fileName, duracion, playlistName) => {
+    const result = await AddPlaylistFiles(id, fileId, fileName, duracion, playlistName)
+    if (result) {
+      // La eliminación fue exitosa, recargar la lista de archivos
+      setLoading(true);
+    }
+  }
+
+  //Manejo del drag and drop
+  //Comienzo del drag and drop
+  const handleDragStar = (e, index) =>{
+    e.dataTransfer.setData('index', index.toString())
+  }
+  //Finalizacion del drag and drop
+  const handlerDragOVer = (e) => {
+    e.preventDefault();
+  }
+
+ const handleDrop = (e) =>{
+    const dropIndex = e.target.getAttribute('data-index');
+    const dragIndex = e.dataTransfer.getData('index');
+    
+    // Los archivos reordenados serán una copia de los archivos de la playlist
+    const reOrderedArchivos= [...playlistDetaill.archivos];
+    const draggedItem = reOrderedArchivos[dragIndex]
+
+    reOrderedArchivos.splice(dragIndex, 1);
+    reOrderedArchivos.splice(dropIndex, 0, draggedItem)
+
+    //reasignamos el array de archivos odenados a los datos de la playlist
+    setPlayListDetaill({
+      ...playlistDetaill,
+      archivos: reOrderedArchivos
+    })
+  }
+
+  //Manejo eliminacion de file.playlist
+  const handleDeleteplaylist = async (index, fileID)=>{
+    let playlistID = id
+    let deletedArchivo = [...playlistDetaill.archivos]
+    deletedArchivo.splice(index, 1)
+    const result = await DeleteFilePlaylist(deletedArchivo, playlistID, fileID)
+    if (result) {
+        // La eliminación fue exitosa, recargar la lista de archivos
+        setLoading(true);
+    }
+    
+    // setPlayListDetaill({
+    //   ...playlistDetaill,
+    //   archivos: deleteArchivo
+    // })
+      
+}
+  //Renderizado condicional
   return (
     <div className="container-fluid">
       {loading && <div>cargando..</div>}
@@ -51,8 +101,8 @@ export const PlaylistDetaillsPage = () => {
           <div className='w-95 p-3 container bordered  shadow '>
             <div className='w-85 p-4 container text-bg-info cookieCard shadow-lg p-3 mb-5 bg-white rounded d-flex  justify-content-around sticky-top'>
               <p className="text-white text-uppercase h3">Nombre: {playlistDetaill.nombre}</p>
-              <p className="text-white text-uppercase h3">duracion: {playlistDetaill.duracion} segundos </p>
-             
+              <p className="text-white text-uppercase h3">duración: {playlistDetaill.duracion} seg. </p>
+
             </div>
             {/* Si la playlist no tiene archivos, se mostrará el siguiente mensaje */}
             {playlistDetaill.archivos.length == 0 &&
@@ -63,19 +113,20 @@ export const PlaylistDetaillsPage = () => {
             {playlistDetaill.archivos.length >= 1 &&
               <div className="col-12 col-lg-8 offset-0 offset-lg-2">
                 <Table className="table-bordered table-hover" responsive>
-                  <thead className="text-center border-dark ">
+                  <thead className="text-center border-jkdark ">
                     <tr>
                       <th>Orden</th>
-                      <th>Nombre</th>
+                      <th colSpan={2}>Nombre</th>
                     </tr>
                   </thead>
                   <tbody>
                     {playlistDetaill.archivos.map((file, index) => (
-                      <tr className="align-middle text-center" key={file._id}>
+                      <tr className="align-middle text-center" key={file._id} draggable onDragStart={(e)=>handleDragStar(e,index)} onDragOver={handlerDragOVer} onDrop={handleDrop}>
                         <td name="index">{index + 1}</td>
                         <td name="nombre">{file.fileName}</td>
+                        <td className="w-10"><Button variant="danger" onClick={() => handleDeleteplaylist( index, file.archivoId)} name="delete">x</Button></td>
                       </tr>
-                    ))}
+                    ))} 
                   </tbody>
                 </Table>
               </div>

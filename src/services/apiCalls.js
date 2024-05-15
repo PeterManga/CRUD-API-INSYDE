@@ -49,7 +49,7 @@ export const CreateFile = async (ClientformData) => {
     formData.append('ubicacion', ClientformData.ubicacion);
     formData.append('descripcion', ClientformData.descripcion);
     formData.append('archivo', ClientformData.archivo);
-    formData.append('playlists', ClientformData.playlists);
+
 
     // Enviamos la solicitud utilizando axios.post con el objeto FormData
     const response = await axios.post(`${urlBase}/file`, formData, {
@@ -106,11 +106,21 @@ export const UpdatePlaylist = async (id, ClientformData, changes) => {
   }
 }
 //Esta es la funcion nos permite borrar una playlist del array playlist del archivo
-export const DeleteFilePlaylist = async (id, playlistId) => {
+export const DeleteFilePlaylist = async (deletedArchivo, playlistID, fileID) => {
   try {
+    console.log(deletedArchivo.length)
+    console.log(deletedArchivo)
     const formData = new FormData();
-    formData.append('playlist', playlistId);
-    const response = await axios.put(`${urlBase}/filedetaills/${id}`, formData)
+    formData.append('fileid', fileID)
+    // Iterar sobre cada objeto en deletedArchivo y agregarlo como una cadena JSON en FormData
+    if (deletedArchivo.length>1) {
+      deletedArchivo.forEach(obj => {
+        formData.append('archivos', JSON.stringify(obj));
+      });
+    } else {
+      formData.append('archivos', JSON.stringify(deletedArchivo))
+    }
+    const response = await axios.put(`${urlBase}/playlistdetails/${playlistID}/deleteFile`, formData)
     return response
   } catch (error) {
     console.error(error);
@@ -126,8 +136,7 @@ export const AddPlaylistFiles = async (id, fileId, fileName, duracion, playlistN
     formData.append('filename', fileName);
     formData.append('duracion', duracion);
     formData.append('playlistname', playlistName)
-    console.log(formData)
-    const response = await axios.put(`${urlBase}/playlistdetaiils/${id}`, formData)
+    const response = await axios.put(`${urlBase}/playlistdetails/${id}/addFile`, formData)
     return response
   } catch (error) {
     console.error(error);
@@ -159,7 +168,7 @@ export const CreatePlaylist = async (ClientformData) => {
 export const GetPlaylistByID = async (id) => {
   try {
     const response = await axios.get(`${urlBase}/playlist/${id}`)
-    console.log(JSON.stringify(response.data))
+    // console.log(JSON.stringify(response.data))
     return response.data;
   } catch (error) {
 
