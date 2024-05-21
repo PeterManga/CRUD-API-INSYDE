@@ -74,6 +74,18 @@ export const DeleteFileById = async (id) => {
   }
 }
 
+// Esta función nos permite crear eventos
+export const createEvent = async (playerId, evento) => {
+  console.log(evento)
+  try {
+      const response = await axios.post(`${urlBase}/players/${playerId}/events`, { playerId, evento });
+      return response.data;
+  } catch (error) {
+      console.error('Error creando el evento:', error);
+      throw error;
+  }
+};
+
 // Esta función nos permite borrar una playlist mediante su identificador
 export const DeletePlaylistById = async (id) => {
   try {

@@ -14,7 +14,7 @@ function NavbarPanel() {
                     <Nav className="me-auto">
                         <Nav.Link onClick={() => handleNavigation('/files')}>Archivos</Nav.Link>
                         <Nav.Link onClick={() => handleNavigation('/playlist')}>Playlist</Nav.Link>
-                        <Nav.Link onClick={() => handleNavigation('/calendario')}>Calendario</Nav.Link>
+                        <Nav.Link onClick={() => handleNavigation('/calendar')}>Calendario</Nav.Link>
                         <div className='d-flex justify-content-end'>
                             <Nav.Link onClick={() => handleNavigation('/login')}>Login</Nav.Link>
                         </div>
