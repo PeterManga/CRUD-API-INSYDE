@@ -9,6 +9,7 @@ import { PlaylistDetaillsPage } from '../pages/Playlists/playlistDetaills/Playli
 import { AddPlaylist } from '../pages/Playlists/addPlaylist/AddPlaylist';
 import { Login } from '../pages/login/Login';
 import { CalendarPage } from '../pages/calendar/Calendar';
+import { PlayerPage } from '../pages/Player/Player';
 
 
 export const AppRoutes = () => {
@@ -23,7 +24,9 @@ export const AppRoutes = () => {
       <Route path="/addPlaylist" element={<AddPlaylist/>} />
       <Route path="/login" element={<Login/>} />
       <Route path="/calendar" element={<CalendarPage/>} />
+      <Route path="/player" element={<PlayerPage/>} />
       <Route path="*" element={<Navigate to="/" />} />
+
 
     </Routes>
   );

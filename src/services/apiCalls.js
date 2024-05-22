@@ -18,7 +18,7 @@ export const fetchFiles = async () => {
 // Muestra todas las playlist disponibles
 export const fetchPlaylists = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/playlists');
+    const response = await axios.get(`${urlBase}/playlists`);
     return response.data; // Devuelve los datos para su uso en React
   } catch (error) {
     console.log(error);
@@ -74,15 +74,25 @@ export const DeleteFileById = async (id) => {
   }
 }
 
+//Funcion para obtener todos los players
+export const getPlayers = async () => {
+  try {
+    const response = await axios.get(`${urlBase}/players`)
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error; // Maneja el error o lanza una excepción
+  }
+}
 // Esta función nos permite crear eventos
 export const createEvent = async (playerId, evento) => {
-  console.log(evento)
   try {
-      const response = await axios.post(`${urlBase}/players/${playerId}/events`, { playerId, evento });
-      return response.data;
+    const response = await axios.post(`${urlBase}/players/${playerId}/events`, { playerId, evento });
+    return response.data;
   } catch (error) {
-      console.error('Error creando el evento:', error);
-      throw error;
+    console.error('Error creando el evento:', error);
+    throw error;
   }
 };
 
@@ -125,7 +135,7 @@ export const DeleteFilePlaylist = async (deletedArchivo, playlistID, fileID) => 
     const formData = new FormData();
     formData.append('fileid', fileID)
     // Iterar sobre cada objeto en deletedArchivo y agregarlo como una cadena JSON en FormData
-    if (deletedArchivo.length>1) {
+    if (deletedArchivo.length > 1) {
       deletedArchivo.forEach(obj => {
         formData.append('archivos', JSON.stringify(obj));
       });
@@ -138,7 +148,7 @@ export const DeleteFilePlaylist = async (deletedArchivo, playlistID, fileID) => 
     console.error(error);
   }
 
-} 
+}
 
 //Esta es la funcion nos permite AÑADIR una playlist del array playlist del archivo
 export const AddPlaylistFiles = async (id, fileId, fileName, duracion, playlistName) => {
@@ -154,7 +164,7 @@ export const AddPlaylistFiles = async (id, fileId, fileName, duracion, playlistN
     console.error(error);
   }
 
-}  
+}
 
 
 

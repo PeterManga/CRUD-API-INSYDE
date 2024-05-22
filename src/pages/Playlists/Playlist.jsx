@@ -82,9 +82,7 @@ export const PlaylistPage = () =>{
                     </div>
                 )}
             </div>
-            <div className="modal fade" arial-hidden='true'>
-                <p>Hola</p>
-            </div>
+           
         </div>
     )
 }
