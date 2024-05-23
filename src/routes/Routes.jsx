@@ -23,7 +23,7 @@ export const AppRoutes = () => {
       <Route path='/playlist/:id' element={<PlaylistDetaillsPage/>}/>
       <Route path="/addPlaylist" element={<AddPlaylist/>} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/calendar" element={<CalendarPage/>} />
+      <Route path="/calendar/:id" element={<CalendarPage/>} />
       <Route path="/player" element={<PlayerPage/>} />
       <Route path="*" element={<Navigate to="/" />} />
 

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventForm from './eventForm/EventForm';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
-import { createEvent } from '../../services/apiCalls';
+import { createEvent, getCalendars } from '../../services/apiCalls';
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import dayjs from 'dayjs'
 import "dayjs/locale/es"
+import { useParams } from 'react-router-dom';
 // Mostramos la información en español
 dayjs.locale("es")
 const localizer = dayjsLocalizer(dayjs)
+
 
 // Personalizar los botones para que aparezcan en español
 const messagesES = {
@@ -25,38 +27,45 @@ const messagesES = {
     noEventsInRange: "Sin eventos"
 };
 
-// const eventos = [
-//     {
-//         start: new Date('2024-05-16T15:00:00'),
-//         end: new Date('2024-05-26T17:00:00'),
-//         title: "Evento 1",
-//         data: {
-//             type: "Reg"
-//         }
-//     }
-// ];
-
-// const components = {
-//     event: (props) => {
-//         console.log(props.title)
-//         const { data } = props.event
-//         if (data) {
-//             <div style={{ width: 50, height: 50 }}>
-//                 <p>{props.title}</p>
-//             </div>
-//         }
-
-//     }
-// }
 
 export const CalendarPage = (props) => {
+
+    // Obtener el parámetro 'id' de los parámetros de la URL usando useParams
+    const { id } = useParams();
     const [showEventForm, setShowEventForm] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [events, setEvents] = useState([]);
-    const playerId = "playerID";
+    const playerId = id;
+    const [loading, setLoading] = useState(false);
+
+    //hook ussEffect
+    useEffect(() => {
+        if ((!loading && events.length === 0) || (loading == true)) {
+            getCalendars()
+                .then(result => {
+                    // Mapear los eventos a la estructura requerida por react-big-calendar
+                    const formattedEvents = result.map(event => ({
+                        start: new Date(event.fechaInicio),
+                        end: new Date(event.fechaFin),
+                        title: event.nombre,
+                        data: {
+                            playlist: event.playlist
+                        }
+                    }));
+                    setEvents(formattedEvents);
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                })
+                .finally(() => setLoading(false));
+        }
+        console.log(events)
+
+    }, [loading, events]);
 
     const handleSelectSlot = (slotInfo) => {
         setSelectedSlot(slotInfo);
+        console.log(slotInfo)
         setShowEventForm(true);
     };
 
@@ -65,19 +74,18 @@ export const CalendarPage = (props) => {
         setShowEventForm(false);
     };
 
-        // Manejar el envío del formulario de eventos
+    // Manejar el envío del formulario de eventos
     const handleEventFormSubmit = async (formData) => {
         const newEvent = {
-            ...formData,
-            start: selectedSlot.start,
-            end: selectedSlot.end
+            ...formData
+
         };
+        console.log(newEvent)
 
         try {
             //Crear un nuevo evento en el servidor
             const updatedPlayer = await createEvent(playerId, newEvent);
-             // Actualizar el estado con el nuevo evento
-            setEvents([...events, newEvent]);
+            setLoading(true);
         } catch (error) {
             console.error('Error creando el evento:', error);
         } finally {
@@ -85,10 +93,12 @@ export const CalendarPage = (props) => {
         }
     };
 
-    
+
+
     return (
         <div className='container' >
             {/* Indicamos el localizador */}
+
             <Calendar
                 localizer={localizer}
                 messages={messagesES}

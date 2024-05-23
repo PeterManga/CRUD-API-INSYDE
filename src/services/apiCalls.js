@@ -86,15 +86,35 @@ export const getPlayers = async () => {
   }
 }
 // Esta función nos permite crear eventos
-export const createEvent = async (playerId, evento) => {
+// Esta función nos permite crear una nueva playlist
+export const createEvent = async (playerId, newEvent) => {
   try {
-    const response = await axios.post(`${urlBase}/players/${playerId}/events`, { playerId, evento });
+    const formData = new FormData();
+    formData.append('nombre', newEvent.title);
+    formData.append('descripcion', newEvent.descripcion);
+    formData.append('fechainicio', newEvent.dateStart);
+    formData.append('fechafin', newEvent.dateEnd);
+    formData.append('playlist', newEvent.selectedPlaylist);
+    formData.append('player', playerId)
+    console.log(formData)
+    const response = await axios.post(`${urlBase}/calendar/`, formData)
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
+export const getCalendars = async () => {
+  try {
+    const response = await axios.get(`${urlBase}/calendars`)
+    console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error('Error creando el evento:', error);
-    throw error;
+    console.log(error);
+    throw error; // Maneja el error o lanza una excepción
   }
-};
+}
 
 // Esta función nos permite borrar una playlist mediante su identificador
 export const DeletePlaylistById = async (id) => {

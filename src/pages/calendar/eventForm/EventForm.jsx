@@ -1,29 +1,45 @@
 import { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { fetchPlaylists } from '../../../services/apiCalls';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const EventForm = ({ show, handleClose, handleFormSubmit }) => {
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { es } from 'date-fns/locale/es';
+registerLocale('es', es)
+
+
+const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDelete  }) => {
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-    const [dateStart, setDateStart] = useState('');
-    const [dateEnd, setDateEnd] = useState('');
-    const [playlist, setplaylist] = useState([])
+    const [title, setTitle] = useState(eventDetails?.nombre || '');
+    const [descripcion, setDescripcion] = useState(eventDetails?.descripcion || '');
+    const [dateStart, setDateStart] = useState(eventDetails ? new Date(eventDetails.fechaInicio).toISOString().slice(0, 16) : '');
+    const [dateEnd, setDateEnd] = useState(eventDetails ? new Date(eventDetails.fechaFin).toISOString().slice(0, 16) : '');
+    const [playlist, setPlaylist] = useState(eventDetails?.playlist || []);
+    const [selectedPlaylist, setSelectedPlaylist] = useState([])
 
     const handleSubmit = () => {
-        handleFormSubmit({ title, descripcion, dateStart, dateEnd });
+        handleFormSubmit({ title, descripcion, dateStart, dateEnd, selectedPlaylist });
         setTitle('');
         setDescripcion('');
-        setDateStart('');
-        setDateEnd('');
+        setDateStart(new Date());
+        setDateEnd(new Date());
+        setSelectedPlaylist([])
         handleClose();
+        
+    };
+
+    const handlePlaylistChange = (e) => {
+        const selectedId = e.target.value;
+        setSelectedPlaylist(prev => [...prev, selectedId]);
+        console.log(selectedPlaylist)
     };
 
     useEffect(() => {
         if (!loading) {
             fetchPlaylists()
                 .then(result => {
-                    setplaylist(result)
+                    setPlaylist(result)
 
                 })
                 .catch(error => {
@@ -31,8 +47,14 @@ const EventForm = ({ show, handleClose, handleFormSubmit }) => {
                 })
                 .finally(() => setLoading(true));
         }
-        console.log(playlist)
-    }, [loading])
+        if (eventDetails) {
+            setTitle(eventDetails.nombre);
+            setDescripcion(eventDetails.descripcion);
+            setDateStart(new Date(eventDetails.fechaInicio).toISOString().slice(0, 16));
+            setDateEnd(new Date(eventDetails.fechaFin).toISOString().slice(0, 16));
+            setPlaylist(eventDetails.playlist);
+        }
+    }, [loading, eventDetails] )
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -51,18 +73,43 @@ const EventForm = ({ show, handleClose, handleFormSubmit }) => {
                     </Form.Group>
                     <Form.Group controlId="formDateStart">
                         <Form.Label>Fecha de inicio</Form.Label>
-                        <Form.Control type='date' value={dateStart} onChange={(e) => setDateStart(e.target.value)}></Form.Control>
+                        <div>
+                            <DatePicker
+                                selected={dateStart}
+                                onChange={(date) => setDateStart(date)}
+                                showTimeSelect
+                                dateFormat="Pp"
+                                className="form-control"
+                                locale="es"
+                            />
+                        </div>
                     </Form.Group>
                     <Form.Group controlId="formDateEnd">
                         <Form.Label>Fecha Fin</Form.Label>
-                        <Form.Control type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)}></Form.Control>
+                        <div>
+                            <DatePicker
+                                selected={dateEnd}
+                                onChange={(date) => setDateEnd(date)}
+                                showTimeSelect
+                                dateFormat="Pp"
+                                className="form-control"
+                                locale="es"
+                            />
+                        </div>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className='mt-3 mb-5'>
                         <Form.Label>Playlists</Form.Label>
-                        <Form.Control as="select" name="playlist">
-                            {playlist.map((playlist) =>
-                                <option value={playlist._id} key={playlist._id} name='playlists'>{playlist.nombre}</option>
-                            )}
+                        <div className=' overflow-auto h-auto mt-3 mb-5'>
+                            {selectedPlaylist.map((id, index) => (
+                                <span key={index} className="mx-1 bg-success" variant="success">{id}</span>
+                            ))}
+                        </div>
+                        <Form.Control as="select" name="playlist" onChange={handlePlaylistChange}>
+                            {playlist.map((pl) => (
+                                <option value={pl._id} key={pl._id} name='playlists'>
+                                    {pl.nombre}
+                                </option>
+                            ))}
                         </Form.Control>
                     </Form.Group>
 

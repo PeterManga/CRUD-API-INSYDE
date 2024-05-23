@@ -54,7 +54,7 @@ export const PlayerPage = () => {
                                     <td name="anchura">{player.anchura}</td>
                                     <td className="d-grid">
                                         <Button variant="info" name="verPlaylist">Administrar player</Button>
-                                        <Button variant="success" className="m-1" name="calendario">Calendario</Button>
+                                        <Button variant="success" className="m-1" name="calendario" onClick={() => handleNavigation(`/calendar/${player._id}`)}>Calendario</Button>
                                     </td>
                                 </tr>
                             ))}
