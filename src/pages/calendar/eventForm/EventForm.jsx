@@ -9,38 +9,31 @@ import { es } from 'date-fns/locale/es';
 registerLocale('es', es)
 
 
-const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDelete  }) => {
+const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDelete }) => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(eventDetails?.nombre || '');
     const [descripcion, setDescripcion] = useState(eventDetails?.descripcion || '');
     const [dateStart, setDateStart] = useState(eventDetails ? new Date(eventDetails.fechaInicio).toISOString().slice(0, 16) : '');
     const [dateEnd, setDateEnd] = useState(eventDetails ? new Date(eventDetails.fechaFin).toISOString().slice(0, 16) : '');
     const [playlist, setPlaylist] = useState(eventDetails?.playlist || []);
-    const [selectedPlaylist, setSelectedPlaylist] = useState([])
+    const [allPlaylists, setAllPlaylists] = useState([]);
 
     const handleSubmit = () => {
-        handleFormSubmit({ title, descripcion, dateStart, dateEnd, selectedPlaylist });
-        setTitle('');
-        setDescripcion('');
-        setDateStart(new Date());
-        setDateEnd(new Date());
-        setSelectedPlaylist([])
+        handleFormSubmit({ title, descripcion, dateStart, dateEnd, playlist });
         handleClose();
-        
     };
 
     const handlePlaylistChange = (e) => {
-        const selectedId = e.target.value;
-        setSelectedPlaylist(prev => [...prev, selectedId]);
-        console.log(selectedPlaylist)
+        const selectedPlaylists = Array.from(e.target.selectedOptions, option => option.value);
+        setPlaylist(prev => [...prev, selectedPlaylists]);
     };
+
 
     useEffect(() => {
         if (!loading) {
             fetchPlaylists()
                 .then(result => {
-                    setPlaylist(result)
-
+                    setAllPlaylists(result);
                 })
                 .catch(error => {
                     console.error("Error fetching data:", error);
@@ -50,17 +43,16 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
         if (eventDetails) {
             setTitle(eventDetails.nombre);
             setDescripcion(eventDetails.descripcion);
-            setDateStart(new Date(eventDetails.fechaInicio).toISOString().slice(0, 16));
-            setDateEnd(new Date(eventDetails.fechaFin).toISOString().slice(0, 16));
+            setDateStart(new Date(eventDetails.fechaInicio));
+            setDateEnd(new Date(eventDetails.fechaFin));
             setPlaylist(eventDetails.playlist);
         }
-    }, [loading, eventDetails] )
+    }, [loading, eventDetails])
 
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Crear Evento</Modal.Title>
-            </Modal.Header>
+                <Modal.Title>{eventDetails ? "Editar Evento" : "Crear Evento"}</Modal.Title>            </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formTitle">
@@ -73,39 +65,36 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
                     </Form.Group>
                     <Form.Group controlId="formDateStart">
                         <Form.Label>Fecha de inicio</Form.Label>
-                        <div>
-                            <DatePicker
-                                selected={dateStart}
-                                onChange={(date) => setDateStart(date)}
-                                showTimeSelect
-                                dateFormat="Pp"
-                                className="form-control"
-                                locale="es"
-                            />
-                        </div>
+                        <Form.Label>Fecha de inicio</Form.Label>
+                        <DatePicker
+                            selected={dateStart}
+                            onChange={(date) => setDateStart(date)}
+                            showTimeSelect
+                            dateFormat="Pp"
+                            className="form-control"
+                            locale="es"
+                        />
                     </Form.Group>
                     <Form.Group controlId="formDateEnd">
                         <Form.Label>Fecha Fin</Form.Label>
-                        <div>
-                            <DatePicker
-                                selected={dateEnd}
-                                onChange={(date) => setDateEnd(date)}
-                                showTimeSelect
-                                dateFormat="Pp"
-                                className="form-control"
-                                locale="es"
-                            />
-                        </div>
+                        <DatePicker
+                            selected={dateEnd}
+                            onChange={(date) => setDateEnd(date)}
+                            showTimeSelect
+                            dateFormat="Pp"
+                            className="form-control"
+                            locale="es"
+                        />
                     </Form.Group>
                     <Form.Group className='mt-3 mb-5'>
                         <Form.Label>Playlists</Form.Label>
                         <div className=' overflow-auto h-auto mt-3 mb-5'>
-                            {selectedPlaylist.map((id, index) => (
+                            {playlist.map((id, index) => (
                                 <span key={index} className="mx-1 bg-success" variant="success">{id}</span>
                             ))}
                         </div>
                         <Form.Control as="select" name="playlist" onChange={handlePlaylistChange}>
-                            {playlist.map((pl) => (
+                            {allPlaylists.map((pl) => (
                                 <option value={pl._id} key={pl._id} name='playlists'>
                                     {pl.nombre}
                                 </option>
@@ -119,9 +108,22 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
                 <Button variant="secondary" onClick={handleClose}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Crear Evento
-                </Button>
+                {eventDetails && (
+                    <>
+                        {/* Elmina el evento y cierra el formulario */}
+                        <Button variant="danger" onClick={() => handleDelete(eventDetails._id).then(handleClose)}>
+                            Eliminar Evento
+                        </Button>
+                        <Button variant="primary" onClick={handleSubmit}>
+                            Guardar Cambios
+                        </Button>
+                    </>
+                )}
+                {!eventDetails && (
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Crear Evento
+                    </Button>
+                )}
             </Modal.Footer>
         </Modal>
     );

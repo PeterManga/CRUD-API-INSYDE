@@ -20,7 +20,7 @@ export const FilesPage = () => {
         const result = await showDeleteAlert(()=>DeleteFileById(fileID));
         if (result) {
             // La eliminación fue exitosa, recargar la lista de archivos
-            setLoading(true);
+            setLoading(false);
         }
     }
     
@@ -44,8 +44,7 @@ export const FilesPage = () => {
     : files
 
     useEffect(() => {
-        if ((!loading && files.length === 0)||(loading==true)) {
-            setLoading(true);
+        if ((!loading && files.length === 0)||(loading==false)) {
             fetchFiles()
                 .then(result => {
                     setFiles(result);
@@ -53,7 +52,7 @@ export const FilesPage = () => {
                 .catch(error => {
                     console.error("Error fetching data:", error);
                 })
-                .finally(() => setLoading(false));
+                .finally(() => setLoading(true));
         }
         
         
@@ -69,7 +68,7 @@ export const FilesPage = () => {
                         </div>
                     </div>
                 </div>
-                {loading && <div>Cargando...</div>}
+                {!loading && <div>Cargando...</div>}
                 {!loading && files.length === 0 && (
                     <div>No se encontraron resultados de la búsqueda.</div>
                 )}

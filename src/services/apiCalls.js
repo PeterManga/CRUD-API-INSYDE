@@ -86,7 +86,6 @@ export const getPlayers = async () => {
   }
 }
 // Esta función nos permite crear eventos
-// Esta función nos permite crear una nueva playlist
 export const createEvent = async (playerId, newEvent) => {
   try {
     const formData = new FormData();
@@ -94,9 +93,9 @@ export const createEvent = async (playerId, newEvent) => {
     formData.append('descripcion', newEvent.descripcion);
     formData.append('fechainicio', newEvent.dateStart);
     formData.append('fechafin', newEvent.dateEnd);
-    formData.append('playlist', newEvent.selectedPlaylist);
+    formData.append('playlist', newEvent.playlist);
     formData.append('player', playerId)
-    console.log(formData)
+    console.log(newEvent)
     const response = await axios.post(`${urlBase}/calendar/`, formData)
     return response
   } catch (error) {
@@ -105,10 +104,43 @@ export const createEvent = async (playerId, newEvent) => {
 
 }
 
-export const getCalendars = async () => {
+// Esta función nos permite actualizar los datos de un evento
+export const updateEvent = async (eventoID, newEvent) => {
   try {
-    const response = await axios.get(`${urlBase}/calendars`)
-    console.log(response.data)
+    const formData = new FormData();
+    formData.append('nombre', newEvent.title);
+    formData.append('descripcion', newEvent.descripcion);
+    formData.append('fechainicio', newEvent.dateStart);
+    formData.append('fechafin', newEvent.dateEnd);
+    formData.append('playlist', newEvent.playlist);
+    formData.append('player', playerId)
+    const response = await axios.put(`${urlBase}/calendar/${eventoID}`, formData)
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
+// Esta función nos permite borrar un evento del calendario mediante su identificador
+export const DeleteCalendar = async (id) => {
+  try {
+    const response = await axios.delete(`${urlBase}/calendar/${id}`)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export const getCalendars = async (id) => {
+  try {
+    const formData = new FormData();
+    formData.append('player', id);
+    const response = await axios.get(`${urlBase}/calendarplayer`, {
+      params: {
+        player: id
+      }
+    });
+    console.log(response)
     return response.data;
   } catch (error) {
     console.log(error);
