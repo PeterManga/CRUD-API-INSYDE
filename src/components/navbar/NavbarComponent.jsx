@@ -2,13 +2,40 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { UseNavigation } from '../../utils/NavigationUtil'
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+const MySwal = withReactContent(Swal);
+
 
 function NavbarPanel() {
     const handleNavigation = UseNavigation();
+    const uploading = useSelector((state) => state.notificacion.uploading);
+
+    useEffect(() => {
+        if (uploading) {
+            MySwal.fire({
+                position: "top-end",
+                toast:true,
+                width: 200,
+                height: 200,
+                title: 'Subiendo archivo',
+                text: 'Por favor, espere...',
+                icon: 'info',
+                allowOutsideClick: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        } else {
+            Swal.close();
+        }
+    }, [uploading]);
 
     return (
         <div className='container-fluid'>
-            <Navbar bg="dark" data-bs-theme="dark" >
+            <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand onClick={() => handleNavigation('/')}>Inicio</Navbar.Brand>
                     <Nav className="me-auto">
@@ -22,7 +49,7 @@ function NavbarPanel() {
                 </Container>
             </Navbar>
         </div>
-    )
+    );
 }
 
 export default NavbarPanel;

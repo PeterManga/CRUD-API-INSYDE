@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.4",
+    "@tanstack/match-sorter-utils": "^8.15.1",
+    "@tanstack/react-table": "^8.17.3",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "dayjs": "^1.11.11",
     "react": "^18.2.0",
     "react-big-calendar": "^1.12.2",

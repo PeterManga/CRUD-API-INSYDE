@@ -68,6 +68,7 @@ export const CreateFile = async (ClientformData) => {
 export const DeleteFileById = async (id) => {
   try {
     const response = await axios.delete(`${urlBase}/file/${id}`)
+    console.log(response)
     return response.data;
   } catch (error) {
     console.error(error);
@@ -140,7 +141,6 @@ export const getCalendars = async (id) => {
         player: id
       }
     });
-    console.log(response)
     return response.data;
   } catch (error) {
     console.log(error);

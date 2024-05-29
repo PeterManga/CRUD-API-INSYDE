@@ -61,7 +61,6 @@ export const PlaylistDetaillsPage = () => {
     // Los archivos reordenados serán una copia de los archivos de la playlist
     const reOrderedArchivos= [...playlistDetaill.archivos];
     const draggedItem = reOrderedArchivos[dragIndex]
-
     reOrderedArchivos.splice(dragIndex, 1);
     reOrderedArchivos.splice(dropIndex, 0, draggedItem)
 

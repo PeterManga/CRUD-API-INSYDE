@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto&display=swap");
+
+body {
+    font-family: "Roboto", sans-serif !important;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+thead th {
+    background: rgb(0, 85, 23);
+    color: white;
+}
+
+table td,
+table th {
+    padding: 12px 20px;
+    text-align: center;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+th .menu {
+    visibility: hidden;
+}
+
+th:hover .menu {
+    visibility: visible;
+}
+
+
+
+.eliminar {
+    background-color: #ffffff !important;
+}
+
+.eliminar:hover {
+    background-color: red !important;
+}
+
+.editar {
+    margin-left: 3px;
+   
+    background-color: #ffffff !important;
+}
+
+.editar:hover {
+    background-color: rgb(0, 145, 255) !important;
+    color: white !important;
+}
+
+.headerDelete {
+    color: #ffffff !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.headerDelete:hover {
+    color: #420000 !important;
+    background-color: red !important;
+}
+
+img {
+    width: fit-content;
+    min-width: 50px;
+    max-width: 120px !important;
+    height: fit-content;
+}
+.filter{
+    border: #2fcb3d !important;
+}
+/* .dropdrown-table{
+  
+} */
+
+.tableContainer {
+    max-width: 100vh;
+    overflow: auto;
+    width: fit-content;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+    /* th,
+    td {
+        padding: 4px;
+    }
+
+    .tableContainer {
+        padding: 0;
+    }
+
+    table {
+        font-size: 12px;
+        background-color: blue;
+    }
+
+    thead {
+        font-size: 14px;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #eaeaea;
+    } */
+}
+
+@media (max-width: 576px) {
+    /* thead th{
+        max-width: 10px !important;
+    }
+
+    table {
+        font-size: 10px;
+        background-color: red;
+    }
+    thead tr th:nth-child(3) {
+        background-color: red;
+        display: none;
+    }
+    tbody tr td:nth-child(3) {
+        background-color: blue;
+        display: none;
+    }
+
+    
+    th,
+    td {
+        padding: 2px;
+    }
+
+    th {
+        font-size: 12px;
+    } */
+    .pagination{
+    }
+    .pagination button{
+        font-size: 10px;
+        height: 40px;
+    }
+}

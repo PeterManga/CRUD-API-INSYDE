@@ -71,7 +71,7 @@ export const CalendarPage = (props) => {
     };
     //borrar
     const handleSelectSlot = (slotInfo) => {
-        //setSelectedEvent(null); // Limpiar cualquier evento seleccionado previamente
+        setSelectedEvent(null); // Limpiar cualquier evento seleccionado previamente
         setShowEventForm(true);
     };
     // Manejar el cierre del formulario de eventos
@@ -124,7 +124,7 @@ export const CalendarPage = (props) => {
                 show={showEventForm} // Mostrar u ocultar el formulario de eventos
                 handleClose={handleEventFormClose}  // Manejar el cierre del formulario
                 handleFormSubmit={handleEventFormSubmit} // Manejar el envío del formulario
-                eventDetails={selectedEvent}
+                eventDetails={selectedEvent} 
                 handleDelete={handleDeleteEvent}
             />
         </div >

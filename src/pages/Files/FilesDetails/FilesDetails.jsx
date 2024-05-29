@@ -78,6 +78,7 @@ export const FileDetailsPage = () => {
                 .catch((error) => console.error("error fetching data:", error))
                 .finally(() => setLoading(false));
         }
+        console.log(fileDetails)
     }, [loading, fileDetails]);
 
     return (
@@ -103,17 +104,19 @@ export const FileDetailsPage = () => {
                             <Form.Label>Ubicacion</Form.Label>
                             <Form.Control type='text' name='ubicacion' value={fileDetails.ubicacion} onChange={handleChange}></Form.Control>
                         </Form.Group>
-                        <Form.Group className='mb-3 text-center' controlId='playlist'>
+                        {fileDetails.playlist.length>=1 &&(
+                            <Form.Group className='mb-3 text-center' controlId='playlist'>
                             <Form.Label>Playlist</Form.Label>
                             <div className='d-flex gap-1 justify-content-center'>
                                 {fileDetails.playlist.map((playlist) =>
                                     <div key={playlist.playlistId}>
                                         <Button className='btn btn-info' onClick={()=>handleNavigation(`/playlist/${playlist.playlistId}`)}  name='playlists'>{playlist.playlistName}</Button>
-                                        <Button className='btn btn-danger' onClick={()=>handleDeleteplaylist(id,playlist.playlistId)} >x</Button>
+                                        {/* <Button className='btn btn-danger' onClick={()=>handleDeleteplaylist(id,playlist.playlistId)} >x</Button> */}
                                     </div>
                                 )}
                             </div>
                         </Form.Group>
+                        )}
                         <Form.Group className='mb-3' controlId='duracion'>
                             <Form.Label>Duración</Form.Label>
                             <Form.Control

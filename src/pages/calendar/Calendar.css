@@ -43,13 +43,13 @@
   .rbc-event-content {
     text-align: center;
     justify-content: center;
-    background-color: #298a03;
+    background-color: #04aa6d ;
     display: flex;
     align-items: center;
     border: 3px solid black;
   }
   .rbc-event-content:hover {
-    background-color: #04aa6d ;
+    background-color: #07d589 ;
   }
   
   /*Timeslots Customization*/

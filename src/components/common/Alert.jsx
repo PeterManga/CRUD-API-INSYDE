@@ -1,6 +1,5 @@
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-import { DeleteFileById } from '../../services/apiCalls';
 
 export function ShowAlert(message, icon) {
     const MySwal = withReactContent(Swal)
@@ -10,21 +9,20 @@ export function ShowAlert(message, icon) {
     });
 }
 
-// Esta alerta nos permite manejar la eliminacion de un archivo
+// Esta alerta nos permite manejar la eliminación de archivos
 export async function showDeleteAlert(funcion) {
     const MySwal = withReactContent(Swal)
     return MySwal.fire({
-        title: "Estás seguro?",
+        title: "¿Estás seguro?",
         text: "No será posible revertir esta acción.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, borrar archivo !"
+        confirmButtonText: "Sí, borrar"
     }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
-             return funcion()
+            return funcion()
                 .then(() => {
                     Swal.fire({
                         title: "Eliminado!",
@@ -47,4 +45,3 @@ export async function showDeleteAlert(funcion) {
         }
     });
 }
-

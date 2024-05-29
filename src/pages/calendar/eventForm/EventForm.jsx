@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { fetchPlaylists } from '../../../services/apiCalls';
 import DatePicker from 'react-datepicker';
@@ -47,6 +47,14 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
             setDateEnd(new Date(eventDetails.fechaFin));
             setPlaylist(eventDetails.playlist);
         }
+        else{
+            setTitle('');
+            setDescripcion('');
+            setDateStart('');
+            setDateEnd('');
+            setPlaylist([]);
+        }
+        console.log(eventDetails)
     }, [loading, eventDetails])
 
     return (
@@ -65,7 +73,7 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
                     </Form.Group>
                     <Form.Group controlId="formDateStart">
                         <Form.Label>Fecha de inicio</Form.Label>
-                        <Form.Label>Fecha de inicio</Form.Label>
+                        <br />
                         <DatePicker
                             selected={dateStart}
                             onChange={(date) => setDateStart(date)}
@@ -77,6 +85,7 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
                     </Form.Group>
                     <Form.Group controlId="formDateEnd">
                         <Form.Label>Fecha Fin</Form.Label>
+                        <br />
                         <DatePicker
                             selected={dateEnd}
                             onChange={(date) => setDateEnd(date)}
@@ -87,7 +96,7 @@ const EventForm = ({ show, handleClose, handleFormSubmit, eventDetails, handleDe
                         />
                     </Form.Group>
                     <Form.Group className='mt-3 mb-5'>
-                        <Form.Label>Playlists</Form.Label>
+                        <Form.Label>Playlists Seleccionadas</Form.Label>
                         <div className=' overflow-auto h-auto mt-3 mb-5'>
                             {playlist.map((id, index) => (
                                 <span key={index} className="mx-1 bg-success" variant="success">{id}</span>
