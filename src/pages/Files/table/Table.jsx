@@ -18,7 +18,7 @@ export default function ReactTable({ data, fetchData }) {
 
     const handleDeleteFile = async (fileID) => {
         const result = await showDeleteAlert(() => DeleteFileById(fileID));
-        if (result){
+        if (result) {
             fetchData()
         }
 
@@ -26,19 +26,22 @@ export default function ReactTable({ data, fetchData }) {
     const handleDeleteSelectedFiles = async () => {
         const selectedIds = table.getSelectedRowModel().flatRows.map(row => row.original._id);
         console.log(selectedIds)
-        const result = await showDeleteAlert(async () => {
-            const deletePromises = selectedIds.map(id => DeleteFileById(id));
-            await Promise.all(deletePromises);
-        });
-        if (result) {
-            fetchData(); // Llama a fetchData para recargar los datos después de eliminar todos los archivos seleccionados
+        if (selectedIds.length > 0) {
+            const result = await showDeleteAlert(async () => {
+                const deletePromises = selectedIds.map(id => DeleteFileById(id));
+                await Promise.all(deletePromises);
+            });
+            if (result) {
+                fetchData(); // Llama a fetchData para recargar los datos después de eliminar todos los archivos seleccionados
+            }
         }
+
     };
     const handleNavigation = UseNavigation();
 
 
     //creamos las cabeceras
-    const columns = React.useMemo(() => [
+    const initialColumns = React.useMemo(() => [
         {
             id: 'selection',
             header: ({ table }) => (
@@ -99,7 +102,7 @@ export default function ReactTable({ data, fetchData }) {
         },
         {
             header: () => <Button className="bi bi-trash3 headerDelete btn-outline-danger" onClick={handleDeleteSelectedFiles}></Button>,
-            id: 'delete',
+            id: 'accciones',
             cell: ({ row }) => (
                 <div>
                     <Button
@@ -115,6 +118,27 @@ export default function ReactTable({ data, fetchData }) {
             ),
         },
     ], []);
+    //Manejar mostar y ocular columnas
+    const [columnVisibility, setColumnVisibility] = useState(
+        initialColumns.reduce((acc, column) => {
+            acc[column.id] = true;
+            return acc;
+        }, {})
+    );
+    const toggleColumnVisibility = (columnId) => {
+        setColumnVisibility(prev => ({
+            ...prev,
+            [columnId]: !prev[columnId]
+        }));
+    };
+
+    const columns = React.useMemo(() =>
+        initialColumns.map(column => ({
+            ...column,
+            isVisible: columnVisibility[column.id]
+        })).filter(column => column.isVisible),
+        [columnVisibility]
+    );
 
     const table = useReactTable({
         data,
@@ -139,10 +163,25 @@ export default function ReactTable({ data, fetchData }) {
 
     return (
         <div className="container">
-            <Form.Group className='mb-4 offset-md-8 col-md-2' controlId='filter'>
+            <div className='container d-flex justify-content-center'>
+                <Form.Group className="columnsVisibility">
+                    {initialColumns.map(column => (
+                        <FormCheck
+                            style={{ overflow: "auto", }}
+                            key={column.id}
+                            type="checkbox"
+                            label={column.id}
+                            checked={columnVisibility[column.id]}
+                            onChange={() => toggleColumnVisibility(column.id)}
+                        />
+                    ))}
+                </Form.Group>
+
+            </div>
+            <Form.Group controlId='filter'>
                 <Form.Control type='text' name='filter' onChange={(e) => table.setGlobalFilter(e.target.value)} placeholder='Buscar...'></Form.Control>
             </Form.Group>
-            <div className="d-flex flex-column gap-2  flex-grow-1">
+            <div className="d-flex flex-column flex-grow-1">
                 <div className="d-flex align-items-center justify-content-center tableContainer container">
                     <table style={{ overflow: "auto" }}>
                         <thead>
