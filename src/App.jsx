@@ -3,16 +3,17 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import NavbarComponent from './components/navbar/NavbarComponent';
 import { Body } from './pages/Body/Body';
 import { Footer } from './pages/Footer/Footer';
+import { AuthProvider } from './contexts/AuthContext';
 
 
 function App() {
   return (
-    <Router>
-      <div className='container-fluid'>
-        <NavbarComponent />
-        <Body />
-      </div>
-    </Router>
+      <Router>
+        <div className='container-fluid'>
+          <NavbarComponent />
+          <Body />
+        </div>
+      </Router>
   );
 }
 

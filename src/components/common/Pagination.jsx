@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 export default function PaginationTable({ table }) {
     return (
-        <div className="container d-flex align-items-center gap-2 col-md-8 justify-content-center  pagination sticky-bottom" style={{ overflow: "auto" }}>
+        <div className="container  pagination" style={{ overflow: "auto" }}>
             <Button variant="success" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
                 Primera página
             </Button>

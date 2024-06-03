@@ -6,7 +6,9 @@ import axios from 'axios'
 const urlBase = 'http://localhost:3000'
 export const fetchFiles = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/files');
+    const response = await axios.get('http://localhost:3000/files',{
+      withCredentials: true
+    });
     //console.log(JSON.stringify(response.data));
     return response.data; // Devuelve los datos para su uso en React
   } catch (error) {
@@ -18,7 +20,9 @@ export const fetchFiles = async () => {
 // Muestra todas las playlist disponibles
 export const fetchPlaylists = async () => {
   try {
-    const response = await axios.get(`${urlBase}/playlists`);
+    const response = await axios.get(`${urlBase}/playlists`,{
+      withCredentials: true
+    });
     return response.data; // Devuelve los datos para su uso en React
   } catch (error) {
     console.log(error);
@@ -32,7 +36,9 @@ export const fetchPlaylists = async () => {
 */
 export const GetFileById = async (id) => {
   try {
-    const response = await axios.get(`${urlBase}/file/${id}`)
+    const response = await axios.get(`${urlBase}/file/${id}`,{
+      withCredentials: true
+    })
     //console.log(JSON.stringify(response.data))
     return response.data;
   } catch (error) {
@@ -55,7 +61,8 @@ export const CreateFile = async (ClientformData) => {
     const response = await axios.post(`${urlBase}/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Es importante establecer el tipo de contenido como 'multipart/form-data' para enviar archivos
-      }
+      },
+      withCredentials: true,
     });
     return response;
 
@@ -67,7 +74,9 @@ export const CreateFile = async (ClientformData) => {
 // Esta función nos permite borrar un archivo mediante su identificador
 export const DeleteFileById = async (id) => {
   try {
-    const response = await axios.delete(`${urlBase}/file/${id}`)
+    const response = await axios.delete(`${urlBase}/file/${id}`,{
+      withCredentials: true
+    })
     console.log(response)
     return response.data;
   } catch (error) {
@@ -78,7 +87,9 @@ export const DeleteFileById = async (id) => {
 //Funcion para obtener todos los players
 export const getPlayers = async () => {
   try {
-    const response = await axios.get(`${urlBase}/players`)
+    const response = await axios.get(`${urlBase}/players`,{
+      withCredentials: true
+    })
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -97,7 +108,9 @@ export const createEvent = async (playerId, newEvent) => {
     formData.append('playlist', newEvent.playlist);
     formData.append('player', playerId)
     console.log(newEvent)
-    const response = await axios.post(`${urlBase}/calendar/`, formData)
+    const response = await axios.post(`${urlBase}/calendar/`, formData,{
+      withCredentials: true
+    })
     return response
   } catch (error) {
     console.error(error);
@@ -115,7 +128,9 @@ export const updateEvent = async (eventoID, newEvent) => {
     formData.append('fechafin', newEvent.dateEnd);
     formData.append('playlist', newEvent.playlist);
     formData.append('player', playerId)
-    const response = await axios.put(`${urlBase}/calendar/${eventoID}`, formData)
+    const response = await axios.put(`${urlBase}/calendar/${eventoID}`, formData,{
+      withCredentials: true
+    })
     return response
   } catch (error) {
     console.error(error);
@@ -126,7 +141,9 @@ export const updateEvent = async (eventoID, newEvent) => {
 // Esta función nos permite borrar un evento del calendario mediante su identificador
 export const DeleteCalendar = async (id) => {
   try {
-    const response = await axios.delete(`${urlBase}/calendar/${id}`)
+    const response = await axios.delete(`${urlBase}/calendar/${id}`,{
+      withCredentials: true
+    })
     return response.data;
   } catch (error) {
     console.error(error);
@@ -139,7 +156,8 @@ export const getCalendars = async (id) => {
     const response = await axios.get(`${urlBase}/calendarplayer`, {
       params: {
         player: id
-      }
+      },
+      withCredentials: true
     });
     return response.data;
   } catch (error) {
@@ -151,7 +169,9 @@ export const getCalendars = async (id) => {
 // Esta función nos permite borrar una playlist mediante su identificador
 export const DeletePlaylistById = async (id) => {
   try {
-    const response = await axios.delete(`${urlBase}/playlist/${id}`)
+    const response = await axios.delete(`${urlBase}/playlist/${id}`,{
+      withCredentials: true
+    })
     return response.data;
   } catch (error) {
     console.error(error);
@@ -173,13 +193,15 @@ export const UpdatePlaylist = async (id, ClientformData, changes) => {
     }
 
     console.log(changes)
-    const response = await axios.put(`${urlBase}/file/${id}`, formData)
+    const response = await axios.put(`${urlBase}/file/${id}`, formData,{
+      withCredentials: true
+    })
     return response;
   } catch (error) {
     console.error(error);
   }
 }
-//Esta es la funcion nos permite borrar una playlist del array playlist del archivo
+//Esta es la funcion nos permite borrar un archivo del array playlist del archivo
 export const DeleteFilePlaylist = async (deletedArchivo, playlistID, fileID) => {
   try {
     console.log(deletedArchivo.length)
@@ -194,7 +216,9 @@ export const DeleteFilePlaylist = async (deletedArchivo, playlistID, fileID) => 
     } else {
       formData.append('archivos', JSON.stringify(deletedArchivo))
     }
-    const response = await axios.put(`${urlBase}/playlistdetails/${playlistID}/deleteFile`, formData)
+    const response = await axios.put(`${urlBase}/playlistdetails/${playlistID}/deleteFile`, formData,{
+      withCredentials: true
+    })
     return response
   } catch (error) {
     console.error(error);
@@ -210,7 +234,23 @@ export const AddPlaylistFiles = async (id, fileId, fileName, duracion, playlistN
     formData.append('filename', fileName);
     formData.append('duracion', duracion);
     formData.append('playlistname', playlistName)
-    const response = await axios.put(`${urlBase}/playlistdetails/${id}/addFile`, formData)
+    const response = await axios.put(`${urlBase}/playlistdetails/${id}/addFile`, formData,{
+      withCredentials: true
+    })
+    return response
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+//Esta es la funcion nos permite ACTUALIZAR el array de archivos de una playlist 
+export const updatePlaylistFiles = async (id, files) => {
+  try {
+    const formData = new FormData();
+    formData.append('files', JSON.stringify(files))
+    const response = await axios.put(`${urlBase}/playlistdetails/${id}/updateplaylist`, formData,{
+      withCredentials: true
+    })
     return response
   } catch (error) {
     console.error(error);
@@ -226,7 +266,9 @@ export const CreatePlaylist = async (ClientformData) => {
     const formData = new FormData();
     formData.append('nombre', ClientformData.nombre);
     formData.append('descripcion', ClientformData.descripcion);
-    const response = await axios.post(`${urlBase}/playlist/`, formData)
+    const response = await axios.post(`${urlBase}/playlist/`, formData,{
+      withCredentials: true
+    })
     return response
   } catch (error) {
     console.error(error);
@@ -241,7 +283,9 @@ export const CreatePlaylist = async (ClientformData) => {
 */
 export const GetPlaylistByID = async (id) => {
   try {
-    const response = await axios.get(`${urlBase}/playlist/${id}`)
+    const response = await axios.get(`${urlBase}/playlist/${id}`,{
+      withCredentials: true
+    })
     // console.log(JSON.stringify(response.data))
     return response.data;
   } catch (error) {

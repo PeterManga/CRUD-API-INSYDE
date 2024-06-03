@@ -5,6 +5,10 @@ import Button from "react-bootstrap/Button";
 import { UseNavigation } from "../../utils/NavigationUtil";
 import { showDeleteAlert } from "../../components/common/Alert";
 
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { FormCheck } from 'react-bootstrap';
+import PaginationTable from "../../components/common/Pagination";
+import { FuzzyFilter } from "../../components/common/Table.utils";
 export const PlaylistPage = () =>{
 
     //hooks de estado

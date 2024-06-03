@@ -34,7 +34,7 @@ export const PlayerPage = () => {
                 <div>No se encontraron resultados de la búsqueda.</div>
             )}
             {player.length>0&&(
-                <div className="col-12 col-lg-8 offset-0 offset-lg-2 shadow-lg p-3 mb-5 bg-white rounde">
+                <div className="container col-12 col-lg-8 offset-0 offset-lg-2 shadow-lg p-3 mt-5 bg-white rounde">
                     <Table className="table-bordered table-hover" responsive >
                         <thead className="text-center border-dark ">
                             <tr>

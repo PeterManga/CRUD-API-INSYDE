@@ -11,7 +11,6 @@ import { Login } from '../pages/login/Login';
 import { CalendarPage } from '../pages/calendar/Calendar';
 import { PlayerPage } from '../pages/Player/Player';
 
-
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -26,8 +25,6 @@ export const AppRoutes = () => {
       <Route path="/calendar/:id" element={<CalendarPage/>} />
       <Route path="/player" element={<PlayerPage/>} />
       <Route path="*" element={<Navigate to="/" />} />
-
-
     </Routes>
   );
 };

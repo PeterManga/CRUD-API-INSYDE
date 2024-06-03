@@ -6,9 +6,9 @@ import Form from 'react-bootstrap/Form';
 import "./table.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
 import { DeleteFileById } from '../../../services/apiCalls';
-import TableHeader from './TableHeader';
-import { FuzzyFilter } from './Table.utils';
-import PaginationTable from './Pagination';
+import TableHeader from '../../../components/common/TableHeader';
+import { FuzzyFilter } from '../../../components/common/Table.utils';
+import PaginationTable from '../../../components/common/Pagination';
 import { showDeleteAlert } from '../../../components/common/Alert';
 import { UseNavigation } from '../../../utils/NavigationUtil';
 //Recibimos el fetch de datos con la props data
@@ -198,7 +198,7 @@ export default function ReactTable({ data, fetchData }) {
                                 <tr key={row.id}
                                     // Cuando selecciones una celda el color de la fila marcada cambiará
                                     style={{
-                                        background: row.getIsSelected() ? '#32CD32' : 'white',
+                                        background: row.getIsSelected() ? '#42be42' : 'white',
                                         color: row.getIsSelected() ? 'white' : 'black'
                                     }}
                                 >

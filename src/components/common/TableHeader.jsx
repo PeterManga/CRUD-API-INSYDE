@@ -13,13 +13,12 @@ export default function TableHeader({ header }) {
             style={{...header.column.getIsPinned()!==false&&{backgroundColor:"rgb(1, 126, 35)", border: "1px solid white"}}}
             
         >
-            <div className="container" >
+            <div className="titleContainer" >
                 {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 {/* Menú que contiene métodos para ordena o fijar cabeceras */}
                 <Dropdown className="menu">
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                         {/* <i class="bi bi-three-dots-vertical"></i> */}
-
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>

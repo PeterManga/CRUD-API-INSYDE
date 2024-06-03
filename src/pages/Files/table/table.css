@@ -103,8 +103,29 @@ input.form-check-input:checked {
     border-color: #015f11 !important;
 }
 
+.titleContainer{
+    display: inline-flex;
+
+}
+.pagination{
+    position: sticky;
+    display: flex;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0 20px;
+}
 
 /* Responsive Styles */
+
+@media (min-width: 900px){
+
+    input#filter {
+        border: #2fcb3d 2px solid !important ;
+        padding: 20px;
+        margin: 20px 0;
+    }
+}
 @media (max-width: 768px) {
 
     /* th,
