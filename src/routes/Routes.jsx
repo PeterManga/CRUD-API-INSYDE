@@ -2,13 +2,13 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from '../pages/Home/Home';
 import {FilesPage} from '../pages/Files/Files';
-import { AddFiles } from '../pages/Files/addFile/AddFile';
 import { FileDetailsPage } from '../pages/Files/filesDetails/FilesDetails';
 import { PlaylistPage } from '../pages/Playlists/Playlist';
 import { PlaylistDetaillsPage } from '../pages/Playlists/playlistDetaills/PlaylistDetaillsPage';
 import { AddPlaylist } from '../pages/Playlists/addPlaylist/AddPlaylist';
 import { Login } from '../pages/login/Login';
 import { CalendarPage } from '../pages/calendar/Calendar';
+import { AddFiles } from '../pages/Files/addFile/AddFile';
 import { PlayerPage } from '../pages/Player/Player';
 
 export const AppRoutes = () => {
@@ -16,7 +16,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/files" element={<FilesPage />} />
-      <Route path="/addfile" element={<AddFiles />} />
+      <Route path="/addfile" element={<AddFiles />}/>
       <Route path='/files/:id' element={<FileDetailsPage/>}/>
       <Route path='/playlist' element={<PlaylistPage/>}/>
       <Route path='/playlist/:id' element={<PlaylistDetaillsPage/>}/>
