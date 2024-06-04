@@ -3,7 +3,7 @@ import axios from 'axios'
  * Obtiene todos los archivos de la base de datos
  * @returns {Promise} Promise que se resuelve con la URL de la imagen.
  */
-const urlBase = 'http://localhost:3000'
+const urlBase = 'https://api-insyde.vercel.app/'
 export const loginRequest = async (user) => axios.post(`${urlBase}/login`, user, {
             withCredentials: true // Permite el envío de cookies en la solicitud
         });

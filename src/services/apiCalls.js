@@ -3,10 +3,10 @@ import axios from 'axios'
  * Obtiene todos los archivos de la base de datos
  * @returns {Promise} Promise que se resuelve con la URL de la imagen.
  */
-const urlBase = 'http://localhost:3000'
+const urlBase = 'https://api-insyde.vercel.app/'
 export const fetchFiles = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/files',{
+    const response = await axios.get('https://api-insyde.vercel.app/',{
       withCredentials: true
     });
     //console.log(JSON.stringify(response.data));
